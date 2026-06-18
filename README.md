@@ -29,7 +29,7 @@ python -m pip install requests streamlit
 streamlit run SunSmartUVtracker.py
 ```
 
-3. Open the local URL shown in the terminal (usually `http://localhost:8501`).
+
 
 ### Use the app
 
