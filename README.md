@@ -15,22 +15,6 @@ A small personal project for exploring UV index information and showing simplifi
 
 ## Getting Started
 
-### Run the Streamlit app
-
-1. Install dependencies:
-
-```powershell
-python -m pip install requests streamlit
-```
-
-2. Run the app:
-
-```powershell
-streamlit run SunSmartUVtracker.py
-```
-
-3. Open the local URL shown in the terminal (usually `http://localhost:8501`).
-
 ### Use the app
 
 - Enter a city name like `Las Vegas, NV` or `Paris, France`.
@@ -51,6 +35,3 @@ Open any of these files directly in a browser:
 - The app uses the Open-Meteo geocoding API and forecast API.
 - The HTML files are static examples and do not require a server.
 
-## License
-
-No license specified.
