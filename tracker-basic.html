@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSmart Basic UV Tracker</title>
+  <link rel="icon" type="image/png" href="SUN SMART.png">
+  <style>
+    :root { font-family: Inter, Avenir, Helvetica, Arial, sans-serif; background: #f8f1e4; color: #2d2d2d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #f8f1e4; }
+    a { color: inherit; text-decoration: none; }
+    .page-wrap { max-width: 980px; margin: 0 auto; padding: 0 20px 40px; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 22px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1rem; }
+    .brand img { width: 40px; height: 40px; object-fit: contain; }
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nav-links a { padding: 9px 14px; border-radius: 999px; background: #fff; border: 1px solid rgba(45,35,22,.12); font-weight: 700; }
+    main { display: grid; gap: 26px; }
+    .tracker-card { padding: 28px; border-radius: 24px; background: #fff; border: 1px solid rgba(45,35,22,.1); box-shadow: 0 20px 50px rgba(71,51,28,.08); }
+    h1 { margin-top: 0; font-size: clamp(2.4rem, 4vw, 3.6rem); }
+    p { margin: 0 0 18px; color: #575757; font-size: 1rem; }
+    label { display: block; margin: 18px 0 8px; font-weight: 700; }
+    input, select { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid #d4ccb9; font-size: 1rem; }
+    button { margin-top: 20px; width: 100%; padding: 14px 18px; border: none; border-radius: 999px; font-weight: 800; background: #2d2d2d; color: #fff; cursor: pointer; }
+    button:hover { transform: translateY(-1px); }
+    .status { margin-top: 24px; display: grid; gap: 16px; }
+    .status-box { padding: 18px 20px; border-radius: 18px; background: #faf5ed; border: 1px solid rgba(45,35,22,.08); }
+    .status-title { margin: 0 0 6px; font-size: .95rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #8a6a34; }
+    .status-text { margin: 0; white-space: pre-wrap; color: #313131; }
+    .hidden { display: none; }
+    .message { color: #6b422a; font-weight: 700; }
+    .form-row { display: grid; gap: 12px; }
+    .checkbox-label { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; }
+    .checkbox-label input { width: auto; }
+    pre { padding: 16px; border-radius: 16px; background: #f5f1ea; border: 1px solid rgba(45,35,22,.1); margin: 0; overflow: auto; white-space: pre-wrap; }
+    @media (min-width: 720px) { .form-row { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="SUN SMART.png" alt="SunSmart logo">
+        <span>SunSmart</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="tracker.html">Advanced</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="tracker-card">
+        <h1>Basic UV Tracker</h1>
+        <p>Enter a city to get the current UV index and sunscreen guidance from Open-Meteo.</p>
+
+        <label for="cityInput">City or location</label>
+        <input id="cityInput" type="text" placeholder="e.g. Sydney, AU" autocomplete="off">
+
+        <button id="searchButton" type="button">Lookup UV index</button>
+
+        <div id="result" class="status-box hidden" aria-live="polite">
+          <p class="status-title">UV result</p>
+          <p id="resultText" class="status-text"></p>
+        </div>
+
+        <div id="matchSection" class="status-box hidden">
+          <p class="status-title">Choose your location</p>
+          <label for="matchSelect">Select the best match</label>
+          <select id="matchSelect"></select>
+          <button id="matchButton" type="button">Fetch UV for selected location</button>
+        </div>
+
+        <div id="rawSection" class="status-box hidden">
+          <div class="checkbox-label">
+            <input id="showRaw" type="checkbox">
+            <label for="showRaw">Show raw API response</label>
+          </div>
+          <pre id="rawOutput"></pre>
+        </div>
+
+        <p id="message" class="message"></p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const cityInput = document.getElementById('cityInput');
+    const searchButton = document.getElementById('searchButton');
+    const resultBox = document.getElementById('result');
+    const resultText = document.getElementById('resultText');
+    const matchSection = document.getElementById('matchSection');
+    const matchSelect = document.getElementById('matchSelect');
+    const matchButton = document.getElementById('matchButton');
+    const rawSection = document.getElementById('rawSection');
+    const showRaw = document.getElementById('showRaw');
+    const rawOutput = document.getElementById('rawOutput');
+    const message = document.getElementById('message');
+
+    let currentCandidates = [];
+    let currentRaw = null;
+
+    searchButton.addEventListener('click', searchCity);
+    matchButton.addEventListener('click', fetchSelectedCandidate);
+    showRaw.addEventListener('change', toggleRaw);
+
+    async function searchCity() {
+      const city = cityInput.value.trim();
+      resetState();
+
+      if (!city) {
+        showMessage('Please enter a city name.');
+        return;
+      }
+
+      showMessage('Looking up matching locations...');
+
+      try {
+        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=10&language=en`);
+        if (!response.ok) throw new Error('Geocoding request failed');
+
+        const data = await response.json();
+        const results = data.results || [];
+
+        if (results.length === 0) {
+          showMessage('No locations found. Try a more specific name like Portland, OR.');
+          return;
+        }
+
+        currentCandidates = results;
+        renderMatchOptions(results);
+        matchSection.classList.remove('hidden');
+        showMessage('Select the best match and fetch the UV index.');
+      } catch (error) {
+        showMessage('Unable to search locations. Check your connection and try again.');
+        console.error(error);
+      }
+    }
+
+    function renderMatchOptions(results) {
+      matchSelect.innerHTML = '';
+      results.forEach((item, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${item.name || 'Unknown'}, ${item.admin1 || item.country || ''} (lat ${Number(item.latitude).toFixed(2)}, lon ${Number(item.longitude).toFixed(2)})`;
+        matchSelect.appendChild(option);
+      });
+    }
+
+    async function fetchSelectedCandidate() {
+      const selected = currentCandidates[matchSelect.value];
+      if (!selected) return;
+      await fetchUvForLocation(selected);
+    }
+
+    async function fetchUvForLocation(location) {
+      resetResult();
+      showMessage('Fetching current UV index...');
+
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(location.latitude)}&longitude=${encodeURIComponent(location.longitude)}&current=uv_index&timezone=auto`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('UV request failed');
+
+        const data = await response.json();
+        currentRaw = data;
+        const uvi = data.current && data.current.uv_index;
+
+        if (uvi === undefined || uvi === null) {
+          showMessage('UV index is not available for the selected location.');
+          return;
+        }
+
+        resultBox.classList.remove('hidden');
+        resultText.textContent = `Location: ${formatLocation(location)}\nCurrent UV index: ${uvi.toFixed(1)}\n${getAdvice(uvi)}`;
+        rawSection.classList.remove('hidden');
+        toggleRaw();
+        showMessage('');
+      } catch (error) {
+        showMessage('Unable to fetch UV data. Try again in a moment.');
+        console.error(error);
+      }
+    }
+
+    function formatLocation(location) {
+      const parts = [location.name, location.admin1, location.country].filter(Boolean);
+      return parts.join(', ');
+    }
+
+    function getAdvice(uvi) {
+      if (uvi <= 2) return 'Low risk. Enjoy the sun, but apply SPF 15+ if needed.';
+      if (uvi <= 5) return 'Moderate risk. Use SPF 30+, reapply every 2 hours, and seek shade when possible.';
+      if (uvi <= 7) return 'High risk. Use SPF 50, reapply frequently, and avoid midday sun.';
+      return 'Very high or extreme risk. Use SPF 50+, cover up, and stay in shade during midday hours.';
+    }
+
+    function resetState() {
+      resultBox.classList.add('hidden');
+      matchSection.classList.add('hidden');
+      rawSection.classList.add('hidden');
+      rawOutput.textContent = '';
+      showRaw.checked = false;
+      message.textContent = '';
+      currentCandidates = [];
+      currentRaw = null;
+    }
+
+    function resetResult() {
+      resultBox.classList.add('hidden');
+      rawSection.classList.add('hidden');
+      rawOutput.textContent = '';
+      showRaw.checked = false;
+    }
+
+    function toggleRaw() {
+      if (!currentRaw) {
+        rawSection.classList.add('hidden');
+        return;
+      }
+      rawOutput.textContent = showRaw.checked ? JSON.stringify(currentRaw, null, 2) : '';
+    }
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+  </script>
+</body>
+</html>

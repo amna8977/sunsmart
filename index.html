@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSmart UV Tracker</title>
+  <link rel="icon" type="image/png" href="SUN SMART.png">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+      background: #f7efe5;
+      color: #2f2f2f;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #f7efe5; }
+    a { color: inherit; text-decoration: none; }
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 48px; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; }
+    .brand img { width: 44px; height: 44px; object-fit: contain; }
+    .nav-links { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .nav-links a { padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,.85); border: 1px solid rgba(76,58,28,.12); font-weight: 700; }
+    .hero { display: grid; gap: 28px; align-items: center; margin-bottom: 40px; padding: 28px 0; }
+    .hero-copy { max-width: 620px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; font-size: .85rem; font-weight: 800; color: #8f6f3a; text-transform: uppercase; letter-spacing: .08em; }
+    .hero-copy h1 { margin: 0 0 18px; font-size: clamp(2.75rem, 4.5vw, 4.75rem); line-height: .98; }
+    .hero-copy p { margin: 0 0 24px; font-size: 1.05rem; color: #4f4f4f; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-width: 170px; padding: 14px 20px; border-radius: 999px; font-weight: 800; border: none; cursor: pointer; transition: transform 160ms ease, background 160ms ease; }
+    .button.primary { background: #2f2f2f; color: #fff; }
+    .button.secondary { background: #fff; color: #2f2f2f; border: 1px solid rgba(47,47,47,.14); }
+    .button:hover { transform: translateY(-1px); }
+    .hero-image { width: 100%; max-height: 520px; border-radius: 24px; object-fit: cover; box-shadow: 0 32px 70px rgba(67,46,25,.14); }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 18px; margin-bottom: 40px; }
+    .feature-card { padding: 26px; border-radius: 18px; background: #fff; border: 1px solid rgba(61,46,27,.08); box-shadow: 0 16px 40px rgba(67,46,25,.08); }
+    .feature-card h2 { margin: 0 0 12px; font-size: 1.15rem; }
+    .feature-card p { margin: 0; color: #555; }
+    .note-card { padding: 22px; border-radius: 18px; background: #fff6e9; border: 1px solid rgba(148,113,60,.14); color: #5d4828; font-weight: 700; }
+    .video-card { display: grid; gap: 18px; padding: 22px; border-radius: 18px; background: #fff; border: 1px solid rgba(61,46,27,.08); box-shadow: 0 16px 40px rgba(67,46,25,.08); }
+    .video-card h2 { margin: 0; font-size: 1.4rem; }
+    .video-card p { margin: 0; color: #5c5c5c; line-height: 1.6; }
+    .video-card video { width: 100%; border-radius: 16px; background: #000; }
+    .footer { padding: 24px 0 24px; color: #5f5f5f; font-size: .95rem; text-align: center; }
+    @media (min-width: 900px) { .hero { grid-template-columns: 1fr 1fr; align-items: center; } }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="SUN SMART.png" alt="SunSmart logo">
+        <span>SunSmart</span>
+      </a>
+      <div class="nav-links">
+        <a href="tracker-basic.html">Basic tracker</a>
+        <a href="tracker.html">Advanced tracker</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">UV safety for every day</div>
+        <h1>Check UV risk before you go outside</h1>
+        <p>Use these static pages to find the current UV index for your location and get quick sun protection guidance from Open-Meteo.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="tracker-basic.html">Open Basic Tracker</a>
+          <a class="button secondary" href="tracker.html">Try Advanced Tracker</a>
+        </div>
+      </div>
+      <img class="hero-image" src="SUNSMART.jpg" alt="Sunlight over a landscape">
+    </section>
+
+    <div class="feature-grid">
+      <article class="feature-card">
+        <h2>Easy city lookup</h2>
+        <p>Search any city and choose the best match from location results in seconds.</p>
+      </article>
+      <article class="feature-card">
+        <h2>Live UV data</h2>
+        <p>Get current UV conditions using the free Open-Meteo forecast API and see a clear risk category.</p>
+      </article>
+      <article class="feature-card">
+        <h2>Actionable guidance</h2>
+        <p>Know when to use sunscreen, seek shade, or avoid direct midday sun with simple recommendations.</p>
+      </article>
+    </div>
+
+    <div class="note-card">
+      These pages are static and can be deployed directly to GitHub Pages. The Python Streamlit app in this repository is not hosted by GitHub Pages.
+    </div>
+
+    <section class="video-card">
+      <h2>Watch a brief UV safety guide</h2>
+      <p>Learn why checking UV is important before going outside, especially on bright days or in strong summer sun.</p>
+      <video controls poster="Screenshot 2026-06-17 103726.png">
+        <source src="Video.mp4" type="video/mp4">
+        Your browser does not support the video element.
+      </video>
+    </section>
+
+    <footer class="footer">
+      <p>Static site ready for GitHub Pages — open <a href="tracker-basic.html">Basic tracker</a> or <a href="tracker.html">Advanced tracker</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>
