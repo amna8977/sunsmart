@@ -405,6 +405,16 @@
     loadLogoFor("navLogo", 0);
     loadLogoFor("siteLogo", 0);
 
+    function hideLoadingScreen() {
+      const loadingScreen = document.getElementById("loadingScreen");
+      if (!loadingScreen) return;
+      loadingScreen.classList.add("hidden");
+    }
+
+    window.addEventListener("DOMContentLoaded", hideLoadingScreen);
+    window.addEventListener("load", hideLoadingScreen);
+    setTimeout(hideLoadingScreen, 100);
+
     function toggleNavMenu(event) {
       const dropdown = event.currentTarget.closest(".nav-dropdown");
       const isOpen = dropdown.classList.toggle("open");
@@ -535,5 +545,6 @@
       rawResponse.textContent = showRaw.checked && rawApiResponse ? JSON.stringify(rawApiResponse, null, 2) : "";
     }
   </script>
+  <nav class="bottom-nav" style="position:fixed;left:0;right:0;bottom:0;height:56px;background:transparent;border-top:1px solid rgba(0,0,0,0.06);z-index:9999;" aria-hidden="true"></nav>
 </body>
 </html>

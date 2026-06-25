@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSmart Advanced UV Tracker</title>
+  <link rel="icon" type="image/x-icon" href="logo.ico">
+  <link rel="icon" type="image/png" href="SUN SMART.png">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="icon" type="image/jpeg" href="logo.jpeg">
+  <link rel="icon" type="image/webp" href="logo.webp">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: #fff;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      width: 100%;
+      padding: 14px clamp(22px, 5vw, 56px);
+      border-bottom: 1px solid rgba(111, 82, 47, 0.28);
+      background: rgba(255, 252, 245, 0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 28px rgba(79, 54, 31, 0.12);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #111;
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .nav-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      background: #fbf5ea;
+    }
+
+    .nav-links a,
+    .nav-trigger {
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 6px;
+      width: auto;
+      color: #111;
+      background: transparent;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-dropdown:hover .nav-trigger,
+    .nav-dropdown:focus-within .nav-trigger {
+      background: #efe2cc;
+      color: #111;
+    }
+
+    .nav-links a.active {
+      background: #7d6848;
+      color: #fff;
+    }
+
+    .nav-dropdown {
+      position: relative;
+      margin-left: 4px;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 20;
+      display: none;
+      min-width: 190px;
+      padding: 6px;
+      border: 1px solid rgba(111, 82, 47, 0.18);
+      border-radius: 8px;
+      background: #fffaf1;
+      box-shadow: 0 16px 40px rgba(79, 54, 31, 0.16);
+    }
+
+    .nav-dropdown:hover .nav-menu,
+    .nav-dropdown:focus-within .nav-menu,
+    .nav-dropdown.open .nav-menu {
+      display: grid;
+      gap: 4px;
+    }
+
+    .nav-menu a {
+      display: block;
+      white-space: nowrap;
+    }
+
+    main {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 44px 20px 64px;
+    }
+
+    .hero-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .site-logo {
+      display: block;
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(36px, 6vw, 62px);
+      line-height: 1;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 0;
+      color: #3f3428;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      padding: 24px;
+      background: #fff;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.07);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin: 0 0 14px;
+      line-height: 1.15;
+    }
+
+    .panel p {
+      margin: 0 0 18px;
+      color: #4b4b4b;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    input,
+    select {
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 13px 12px;
+      border: 1px solid #b8b8b8;
+      border-radius: 6px;
+      font-size: 16px;
+      background: #fff;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 6px;
+      color: #fff;
+      background: #111;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #333;
+    }
+
+    .dashboard {
+      display: grid;
+      gap: 18px;
+    }
+
+    .status-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: center;
+      border-left: 8px solid #555;
+    }
+
+    .status-card.low {
+      border-left-color: #2f8f46;
+    }
+
+    .status-card.moderate {
+      border-left-color: #e0a800;
+    }
+
+    .status-card.high {
+      border-left-color: #e86f1a;
+    }
+
+    .status-card.very-high {
+      border-left-color: #d92323;
+    }
+
+    .status-card.extreme {
+      border-left-color: #7b2cbf;
+    }
+
+    .location {
+      margin: 0 0 8px;
+      color: #555;
+      font-weight: 800;
+    }
+
+    .uvi-number {
+      font-size: clamp(58px, 12vw, 104px);
+      font-weight: 900;
+      line-height: 0.9;
+    }
+
+    .risk-name {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: #fff;
+      background: #111;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .risk-meter {
+      display: grid;
+      gap: 8px;
+    }
+
+    .meter-track {
+      position: relative;
+      height: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2f8f46 0 18%, #e0a800 18% 42%, #e86f1a 42% 58%, #d92323 58% 82%, #7b2cbf 82% 100%);
+    }
+
+    .meter-marker {
+      position: absolute;
+      top: -5px;
+      left: 0;
+      width: 6px;
+      height: 28px;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: #111;
+      transform: translateX(-50%);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+    }
+
+    .meter-labels {
+      display: flex;
+      justify-content: space-between;
+      color: #555;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .metric {
+      min-height: 116px;
+      padding: 16px;
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .metric span {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .warning {
+      display: none;
+      border-color: #f0a000;
+      background: #fff5df;
+    }
+
+    .warning.active {
+      display: block;
+    }
+
+    .warning h2 {
+      color: #7a2e00;
+    }
+
+    .plan-output {
+      display: none;
+    }
+
+    .plan-output.active {
+      display: block;
+    }
+
+    .plan-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .plan-list li {
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fafafa;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .placeholder {
+      color: #555;
+      font-weight: 700;
+    }
+
+
+    .tone-tools {
+      display: grid;
+      gap: 10px;
+      margin: -6px 0 18px;
+    }
+
+    .tone-tools button,
+    .tone-chooser button,
+    .camera-actions button,
+    .photo-upload {
+      width: 100%;
+      padding: 11px 14px;
+      border: 0;
+      border-radius: 6px;
+      color: #111;
+      background: #efe2cc;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .tone-tools button:hover,
+    .tone-chooser button:hover,
+    .camera-actions button:hover,
+    .photo-upload:hover {
+      background: #d9c8aa;
+    }
+
+
+    .save-photo-choice {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: fit-content;
+      min-width: 230px;
+      margin: 0;
+      padding: 10px 14px;
+      border: 1px solid #d7c6a9;
+      border-radius: 6px;
+      color: #5f5343;
+      background: #fffaf1;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.35;
+      cursor: pointer;
+    }
+
+    .save-photo-choice:hover {
+      background: #efe2cc;
+    }
+
+    .save-photo-choice input {
+      width: auto;
+      margin: 0;
+    }
+    .tone-note {
+      margin: 0;
+      color: #5f5343;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .tone-chooser,
+    .camera-panel {
+      display: none;
+      gap: 10px;
+      margin: -6px 0 18px;
+      padding: 12px;
+      border: 1px solid #e2d4bd;
+      border-radius: 8px;
+      background: #fffaf1;
+    }
+
+    .tone-chooser.active,
+    .camera-panel.active {
+      display: grid;
+    }
+
+    .photo-upload input,
+    .skin-canvas {
+      display: none;
+    }
+
+    .skin-video {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #111;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .camera-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    #cityPicker,
+    #rawSection {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 16px;
+      font-weight: 400;
+    }
+
+    .checkbox-label input {
+      width: auto;
+      margin: 0;
+    }
+
+    pre {
+      display: none;
+      overflow: auto;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fafafa;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 860px) {
+      .app-grid,
+      .hero-panel,
+      .status-card {
+        grid-template-columns: 1fr;
+      }
+
+      .site-logo {
+        width: 78px;
+        height: 78px;
+      }
+
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .nav-menu {
+        right: auto;
+        left: 0;
+      }
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: #fffaf1;
+      transition: opacity 320ms ease, visibility 320ms ease;
+    }
+
+    .loading-screen.hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-card {
+      display: grid;
+      justify-items: center;
+      gap: 16px;
+      color: #7d6848;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .loading-logo {
+      width: 108px;
+      height: 108px;
+      object-fit: contain;
+      animation: logoBounce 780ms ease-in-out infinite alternate;
+      filter: drop-shadow(0 18px 18px rgba(79, 54, 31, 0.18));
+    }
+
+    .loading-dots::after {
+      content: "";
+      animation: loadingDots 1.2s steps(4, end) infinite;
+    }
+
+    @keyframes logoBounce {
+      from {
+        transform: translateY(0) scale(1);
+      }
+
+      to {
+        transform: translateY(-22px) scale(1.04);
+      }
+    }
+
+    @keyframes loadingDots {
+      0% {
+        content: "";
+      }
+
+      25% {
+        content: ".";
+      }
+
+      50% {
+        content: "..";
+      }
+
+      75%,
+      100% {
+        content: "...";
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" aria-label="Loading SunSmart" aria-live="polite">
+    <div class="loading-card">
+      <img id="loadingLogo" class="loading-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <div>Loading SunSmart<span class="loading-dots"></span></div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <a class="nav-brand" href="index.html">
+      <img id="navLogo" class="nav-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <span>SunSmart</span>
+    </a>
+    <div class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-trigger" type="button" aria-expanded="false" onclick="toggleNavMenu(event)">UV Tracker</button>
+        <div class="nav-menu">
+          <a href="tracker-basic.html">Basic Tracker</a>
+          <a class="active" href="tracker.html">Advanced Tracker</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero-panel" aria-label="SunSmart UV Tracker introduction">
+      <div>
+        <h1>Advanced UV Tracker</h1>
+        <p class="lead">Check your local UV level, see the risk instantly, and build a protection plan before you go outside.</p>
+      </div>
+      <img id="siteLogo" class="site-logo" src="SUN SMART.png" alt="SunSmart UV Tracker logo">
+    </section>
+
+    <div class="app-grid">
+      <section class="panel" aria-label="UV lookup and personal plan inputs">
+        <h2>Check Your City</h2>
+        <p>Start with a city, then add your plans to get personalized sun safety guidance.</p>
+
+        <label for="city">City</label>
+        <input id="city" type="text" placeholder="Example: Portland, OR">
+
+        <button type="button" onclick="checkUV()">Get UV Index</button>
+
+        <div id="cityPicker">
+          <label for="citySelect">Select your city:</label>
+          <select id="citySelect" onchange="fetchSelectedCityUV()"></select>
+        </div>
+
+        <h3>Personalize Your Plan</h3>
+        <label for="sensitivity">Skin sensitivity</label>
+        <select id="sensitivity" onchange="updatePlan()">
+          <option value="" selected>Choose one</option>
+          <option value="average">Average skin</option>
+          <option value="sensitive">Sensitive skin</option>
+          <option value="very-sensitive">Very fair or medical sensitivity</option>
+        </select>
+
+        <label for="skinTone">Skin color / tone</label>
+        <select id="skinTone" onchange="saveManualSkinTone()">
+          <option value="" selected>Choose one</option>
+          <option value="very-fair">Very fair</option>
+          <option value="fair">Fair</option>
+          <option value="medium">Medium</option>
+          <option value="olive">Olive</option>
+          <option value="brown">Brown</option>
+          <option value="dark">Dark</option>
+        </select>
+
+        <div class="tone-tools">
+          <button type="button" onclick="openToneChooser()">Use Camera or Photo</button>
+          <button id="savedPhotoButton" type="button" onclick="useSavedSkinPhoto()" hidden>Use Saved Photo</button>
+          <label class="save-photo-choice" for="saveSkinPhotoChoice">
+            <input id="saveSkinPhotoChoice" type="checkbox" checked>
+            Save this as my last saved photo
+          </label>
+          <p id="skinToneStatus" class="tone-note">Optional: estimate your skin tone with your camera or a photo. A small local photo sample can be saved on this device; nothing is uploaded.</p>
+        </div>
+
+        <div id="toneChooser" class="tone-chooser">
+          <button type="button" onclick="startSkinCamera()">Use Live Camera</button>
+          <label class="photo-upload" for="skinImageInput">
+            Choose From Camera Roll
+            <input id="skinImageInput" type="file" accept="image/*" onchange="detectSkinToneFromFile(event)">
+          </label>
+        </div>
+
+        <div id="cameraPanel" class="camera-panel">
+          <video id="skinVideo" class="skin-video" autoplay playsinline muted></video>
+          <p class="tone-note">Point the center of the camera at your forearm or hand in natural light, then detect.</p>
+          <div class="camera-actions">
+            <button type="button" onclick="captureSkinTone()">Detect Tone</button>
+            <button type="button" onclick="stopSkinCamera()">Cancel</button>
+          </div>
+          <canvas id="skinCanvas" class="skin-canvas" width="80" height="80"></canvas>
+        </div>
+
+        <label for="activity">Outdoor activity</label>
+        <select id="activity" onchange="updatePlan()">
+          <option value="" selected>Choose one</option>
+          <option value="walking">Walking or errands</option>
+          <option value="sports">Sports or exercise</option>
+          <option value="beach">Beach or pool</option>
+          <option value="school">School or camp</option>
+        </select>
+
+        <label for="timeOutside">Time outside</label>
+        <select id="timeOutside" onchange="updatePlan()">
+          <option value="" selected>Choose one</option>
+          <option value="30">Under 30 minutes</option>
+          <option value="60">About 1 hour</option>
+          <option value="120">About 2 hours</option>
+          <option value="180">3+ hours</option>
+        </select>
+
+        <div id="rawSection">
+          <label class="checkbox-label" for="showRaw">
+            <input id="showRaw" type="checkbox" onchange="toggleRawResponse()">
+            Show raw API response
+          </label>
+          <pre id="rawResponse"></pre>
+        </div>
+      </section>
+
+      <section class="dashboard" aria-label="UV dashboard">
+        <section id="warningPanel" class="panel warning" aria-live="polite">
+          <h2>High UV Warning</h2>
+          <p id="warningText">Extreme UV can damage skin quickly. Use stronger protection and avoid direct midday sun.</p>
+        </section>
+
+        <section id="statusCard" class="panel status-card" aria-live="polite">
+          <div>
+            <p id="locationText" class="location">No city selected yet</p>
+            <div id="uviNumber" class="uvi-number">--</div>
+            <span id="riskName" class="risk-name">Waiting</span>
+          </div>
+          <div class="risk-meter" aria-label="UV risk meter">
+            <div class="meter-track">
+              <span id="meterMarker" class="meter-marker"></span>
+            </div>
+            <div class="meter-labels">
+              <span>0</span>
+              <span>3</span>
+              <span>6</span>
+              <span>8</span>
+              <span>11+</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="UV guidance summary">
+          <div class="metric">
+            <span>Recommended SPF</span>
+            <strong id="spfValue">Check a city</strong>
+          </div>
+          <div class="metric">
+            <span>Reapply</span>
+            <strong id="reapplyValue">Check a city</strong>
+          </div>
+          <div class="metric">
+            <span>Best Action</span>
+            <strong id="actionValue">Check a city</strong>
+          </div>
+        </section>
+
+        <section id="planOutput" class="panel plan-output">
+          <h2>Your Protection Plan</h2>
+          <ul id="planList" class="plan-list"></ul>
+        </section>
+
+        <section id="emptyState" class="panel">
+          <p class="placeholder">Search for a city to unlock your UV dashboard, warning mode, and custom protection plan.</p>
+        </section>
+      </section>
+    </div>
+  </main>
+  <script>
+    const stateNames = {
+      AK: "Alaska",
+      AZ: "Arizona",
+      AR: "Arkansas",
+      CA: "California",
+      CO: "Colorado",
+      CT: "Connecticut",
+      DE: "Delaware",
+      FL: "Florida",
+      GA: "Georgia",
+      HI: "Hawaii",
+      ID: "Idaho",
+      IL: "Illinois",
+      IN: "Indiana",
+      IA: "Iowa",
+      KS: "Kansas",
+      KY: "Kentucky",
+      LA: "Louisiana",
+      ME: "Maine",
+      MD: "Maryland",
+      MA: "Massachusetts",
+      MI: "Michigan",
+      MN: "Minnesota",
+      MS: "Mississippi",
+      MO: "Missouri",
+      MT: "Montana",
+      NE: "Nebraska",
+      NV: "Nevada",
+      NH: "New Hampshire",
+      NJ: "New Jersey",
+      NM: "New Mexico",
+      NY: "New York",
+      NC: "North Carolina",
+      ND: "North Dakota",
+      OH: "Ohio",
+      OK: "Oklahoma",
+      OR: "Oregon",
+      PA: "Pennsylvania",
+      RI: "Rhode Island",
+      SC: "South Carolina",
+      SD: "South Dakota",
+      TN: "Tennessee",
+      TX: "Texas",
+      UT: "Utah",
+      VT: "Vermont",
+      VA: "Virginia",
+      WA: "Washington",
+      WV: "West Virginia",
+      WI: "Wisconsin",
+      WY: "Wyoming"
+    };
+    let candidates = [];
+    let rawApiResponse = null;
+    let currentUV = null;
+    let currentLocation = "";
+    let skinStream = null;
+    const savedSkinPhotoKey = "sunSmartSkinPhoto";
+    const skinToneLabels = {
+      "very-fair": "Very fair",
+      fair: "Fair",
+      medium: "Medium",
+      olive: "Olive",
+      brown: "Brown",
+      dark: "Dark"
+    };
+
+    function loadLogoFor(elementId, index) {
+      const logo = document.getElementById(elementId);
+      if (!logo) return;
+      if (index >= logoFiles.length) {
+        logo.style.display = "none";
+        return;
+      }
+      logo.onerror = function() { loadLogoFor(elementId, index + 1); };
+      logo.src = logoFiles[index];
+    }
+
+    loadLogoFor("navLogo", 0);
+    loadLogoFor("siteLogo", 0);
+    loadSavedSkinPhoto();
+    const loadingStartedAt = Date.now();
+    const minimumLoadingTime = 1000;
+    loadLogoFor("loadingLogo", 0);
+
+    function hideLoadingScreen() {
+      const loadingScreen = document.getElementById("loadingScreen");
+      if (!loadingScreen) return;
+      loadingScreen.classList.add("hidden");
+    }
+
+    window.addEventListener("DOMContentLoaded", hideLoadingScreen);
+    window.addEventListener("load", hideLoadingScreen);
+    setTimeout(hideLoadingScreen, 100);
+
+    function toggleNavMenu(event) {
+      const dropdown = event.currentTarget.closest(".nav-dropdown");
+      const isOpen = dropdown.classList.toggle("open");
+      event.currentTarget.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    document.addEventListener("click", function(event) {
+      document.querySelectorAll(".nav-dropdown.open").forEach(function(dropdown) {
+        if (!dropdown.contains(event.target)) {
+          dropdown.classList.remove("open");
+          const trigger = dropdown.querySelector(".nav-trigger");
+          if (trigger) trigger.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+
+    function openToneChooser() {
+      const chooser = document.getElementById("toneChooser");
+      if (chooser) chooser.classList.toggle("active");
+    }
+
+    function saveManualSkinTone() {
+      const skinTone = document.getElementById("skinTone").value;
+      if (skinTone) {
+        updateSkinToneStatus("Manual selection applied. Use camera or photo if you want to save a reusable photo sample.");
+      }
+      updatePlan();
+    }
+
+    function loadSavedSkinPhoto() {
+      updateSavedPhotoButton();
+      if (localStorage.getItem(savedSkinPhotoKey)) {
+        updateSkinToneStatus("A saved local photo sample is available. Use it to detect your skin tone without choosing a photo again.");
+      }
+    }
+
+    function useSavedSkinPhoto() {
+      const savedPhoto = localStorage.getItem(savedSkinPhotoKey);
+      if (!savedPhoto) {
+        updateSkinToneStatus("No saved photo yet. Use camera or camera roll once to save one on this device.");
+        updateSavedPhotoButton();
+        return;
+      }
+      const image = new Image();
+      image.onload = function() {
+        const color = sampleImageColor(image, image.naturalWidth, image.naturalHeight);
+        applyDetectedSkinTone(color, false, "Detected again from your saved local photo sample.");
+      };
+      image.onerror = function() {
+        localStorage.removeItem(savedSkinPhotoKey);
+        updateSavedPhotoButton();
+        updateSkinToneStatus("The saved photo could not be read, so it was removed. Please choose a new photo.");
+      };
+      image.src = savedPhoto;
+    }
+
+    function updateSavedPhotoButton() {
+      const savedButton = document.getElementById("savedPhotoButton");
+      if (savedButton) savedButton.hidden = !localStorage.getItem(savedSkinPhotoKey);
+    }
+
+    function updateSkinToneStatus(message) {
+      const status = document.getElementById("skinToneStatus");
+      if (status) status.textContent = message;
+    }
+
+    async function startSkinCamera() {
+      const video = document.getElementById("skinVideo");
+      const cameraPanel = document.getElementById("cameraPanel");
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        updateSkinToneStatus("Camera is not available here. Try choosing a photo from your camera roll.");
+        return;
+      }
+      try {
+        stopSkinCamera();
+        skinStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+        video.srcObject = skinStream;
+        cameraPanel.classList.add("active");
+        updateSkinToneStatus("Camera is on. Use natural light and center your forearm or hand.");
+      } catch (error) {
+        updateSkinToneStatus("Camera permission was blocked or unavailable. Try choosing a photo instead.");
+      }
+    }
+
+    async function captureSkinTone() {
+      const video = document.getElementById("skinVideo");
+      if (!video || !video.videoWidth || !video.videoHeight) {
+        updateSkinToneStatus("Camera is still starting. Try again in a moment.");
+        return;
+      }
+      updateSkinToneStatus("Stabilizing camera color. Hold still for a moment...");
+      const color = await sampleStableCameraColor(video);
+      applyDetectedSkinTone(color, true, "Estimated from several camera frames.");
+      stopSkinCamera();
+    }
+
+    async function sampleStableCameraColor(video) {
+      const samples = [];
+      for (let i = 0; i < 10; i += 1) {
+        await wait(70);
+        samples.push(sampleImageColor(video, video.videoWidth, video.videoHeight));
+      }
+      samples.sort(function(a, b) { return colorBrightness(a) - colorBrightness(b); });
+      const middleSamples = samples.slice(2, 8);
+      return averageColors(middleSamples);
+    }
+
+    function wait(milliseconds) {
+      return new Promise(function(resolve) { setTimeout(resolve, milliseconds); });
+    }
+
+    function colorBrightness(color) {
+      return (color.r * 0.299) + (color.g * 0.587) + (color.b * 0.114);
+    }
+
+    function averageColors(colors) {
+      const total = colors.reduce(function(sum, color) { return { r: sum.r + color.r, g: sum.g + color.g, b: sum.b + color.b }; }, { r: 0, g: 0, b: 0 });
+      return { r: Math.round(total.r / colors.length), g: Math.round(total.g / colors.length), b: Math.round(total.b / colors.length) };
+    }
+
+    function stopSkinCamera() {
+      const cameraPanel = document.getElementById("cameraPanel");
+      const video = document.getElementById("skinVideo");
+      if (skinStream) {
+        skinStream.getTracks().forEach(function(track) { track.stop(); });
+        skinStream = null;
+      }
+      if (video) video.srcObject = null;
+      if (cameraPanel) cameraPanel.classList.remove("active");
+    }
+
+    function detectSkinToneFromFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const image = new Image();
+      image.onload = function() { const color = sampleImageColor(image, image.naturalWidth, image.naturalHeight); applyDetectedSkinTone(color, true, "Estimated from your photo."); URL.revokeObjectURL(image.src); event.target.value = ""; };
+      image.onerror = function() { updateSkinToneStatus("That image could not be read. Try another photo."); event.target.value = ""; };
+      image.src = URL.createObjectURL(file);
+    }
+
+    function sampleImageColor(source, width, height) {
+      const canvas = document.getElementById("skinCanvas");
+      const context = canvas.getContext("2d");
+      const sampleSize = 80;
+      const sourceSize = Math.max(20, Math.min(width, height) * 0.18);
+      const sourceX = (width - sourceSize) / 2;
+      const sourceY = (height - sourceSize) / 2;
+      let r = 0; let g = 0; let b = 0; let count = 0;
+      canvas.width = sampleSize;
+      canvas.height = sampleSize;
+      context.drawImage(source, sourceX, sourceY, sourceSize, sourceSize, 0, 0, sampleSize, sampleSize);
+      const data = context.getImageData(0, 0, sampleSize, sampleSize).data;
+      for (let i = 0; i < data.length; i += 4) { r += data[i]; g += data[i + 1]; b += data[i + 2]; count += 1; }
+      return { r: Math.round(r / count), g: Math.round(g / count), b: Math.round(b / count) };
+    }
+
+    function shouldSaveDetectedPhoto() { const saveChoice = document.getElementById("saveSkinPhotoChoice"); return !saveChoice || saveChoice.checked; }
+
+    function saveSkinPhotoSample() {
+      const canvas = document.getElementById("skinCanvas");
+      try { localStorage.setItem(savedSkinPhotoKey, canvas.toDataURL("image/jpeg", 0.78)); } catch (error) { updateSkinToneStatus("Skin tone was detected, but the photo sample could not be saved on this device."); }
+      updateSavedPhotoButton();
+    }
+
+    function applyDetectedSkinTone(color, shouldSavePhoto, detailMessage) {
+      const skinToneSelect = document.getElementById("skinTone");
+      const chooser = document.getElementById("toneChooser");
+      if (!isLikelySkinColor(color.r, color.g, color.b)) { updateSkinToneStatus("That sample does not look like skin. Try your forearm or hand in natural light, centered in the camera/photo."); return; }
+      const tone = classifySkinTone(color.r, color.g, color.b);
+      skinToneSelect.value = tone;
+      const saveChoice = shouldSavePhoto && shouldSaveDetectedPhoto();
+      const saveMessage = shouldSavePhoto ? (saveChoice ? "Saved this as your last saved photo." : "Did not replace your saved photo.") : "";
+      if (saveChoice) saveSkinPhotoSample(); else updateSavedPhotoButton();
+      updateSkinToneStatus("Estimated " + skinToneLabels[tone] + " skin tone. " + detailMessage + " " + saveMessage + " Lighting can affect results.");
+      if (chooser) chooser.classList.remove("active"); updatePlan();
+    }
+
+    function isLikelySkinColor(r, g, b) {
+      const max = Math.max(r, g, b); const min = Math.min(r, g, b);
+      const brightness = (r * 0.299) + (g * 0.587) + (b * 0.114);
+      const saturationRange = max - min;
+      const warmEnough = r >= b - 12 && r >= g - 35;
+      const notTooGray = saturationRange > 12;
+      const notTooBrightOrDark = brightness > 45 && brightness < 245;
+      const channelBalance = g > 35 && r > 45 && b > 25;
+      const notStrongGreenBlue = g < r + 70 && b < r + 55;
+      return warmEnough && notTooGray && notTooBrightOrDark && channelBalance && notStrongGreenBlue;
+    }
+
+    function classifySkinTone(r, g, b) {
+      const brightness = (r * 0.299) + (g * 0.587) + (b * 0.114);
+      const warmth = r - b;
+      if (brightness > 210) return "very-fair";
+      if (brightness > 178) return "fair";
+      if (brightness > 145) return warmth > 28 ? "olive" : "medium";
+      if (brightness > 95) return "brown";
+      return "dark";
+    }
+
+    async function checkUV() {
+      const cityInput = document.getElementById("city");
+      const cityPicker = document.getElementById("cityPicker");
+      const rawSection = document.getElementById("rawSection");
+      const rawResponse = document.getElementById("rawResponse");
+      const showRaw = document.getElementById("showRaw");
+      const city = cityInput.value.trim();
+      const locationQuery = parseLocationQuery(city);
+      if (city === "") { showStatusMessage("Please enter a city."); return; }
+      cityPicker.style.display = "none";
+      rawSection.style.display = "none";
+      rawResponse.style.display = "none";
+      showRaw.checked = false;
+      rawApiResponse = null;
+      currentUV = null;
+      showStatusMessage("Looking up your city...");
+      try {
+        const searchUrl = "https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(locationQuery.city) + "&count=10&language=en&format=json";
+        const searchResponse = await fetch(searchUrl);
+        const searchData = await searchResponse.json();
+        const matchingCandidates = filterCandidates(searchData.results || [], locationQuery);
+        if (matchingCandidates.length === 0) { showStatusMessage("No results found. Try a more specific query like Portland, OR."); return; }
+        candidates = prioritizeCandidates(matchingCandidates, locationQuery);
+        buildCitySelect();
+        cityPicker.style.display = "block";
+        await fetchSelectedCityUV();
+      } catch (error) { showStatusMessage("No results found. Check your connection or try a more specific city."); }
+    }
+
+    function parseLocationQuery(query) {
+      const parts = query.split(",").map(function(part) { return part.trim(); }).filter(Boolean);
+      const city = parts[0] || query;
+      const region = parts.length > 1 ? parts[1] : "";
+      const regionUpper = region.toUpperCase();
+      return { city: city, region: region, stateName: stateNames[regionUpper] || region };
+    }
+
+    function prioritizeCandidates(results, locationQuery) {
+      if (!locationQuery.region) return results;
+      return results.slice().sort(function(a, b) { return candidateScore(b, locationQuery) - candidateScore(a, locationQuery); });
+    }
+
+    function filterCandidates(results, locationQuery) {
+      const city = normalizeLocationName(locationQuery.city);
+      const region = normalizeLocationName(locationQuery.region);
+      const stateName = normalizeLocationName(locationQuery.stateName);
+      return results.filter(function(candidate) { const candidateName = normalizeLocationName(candidate.name || ""); const candidateAdmin = normalizeLocationName(candidate.admin1 || ""); const cityMatches = candidateName === city; const regionMatches = !region || candidateAdmin === region || candidateAdmin === stateName; return cityMatches && regionMatches; });
+    }
+
+    function candidateScore(candidate, locationQuery) {
+      const admin = (candidate.admin1 || "").toLowerCase();
+      const country = (candidate.country_code || candidate.country || "").toLowerCase();
+      const wantedRegion = locationQuery.region.toLowerCase();
+      const wantedState = locationQuery.stateName.toLowerCase();
+      let score = 0;
+      if (admin === wantedState || admin === wantedRegion) score += 20;
+      else if (admin.includes(wantedState) || admin.includes(wantedRegion)) score += 10;
+      if (country === "us" || country === "united states") score += 2;
+      return score;
+    }
+
+    function normalizeLocationName(value) { return String(value).trim().toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " "); }
+
+    function buildCitySelect() {
+      const citySelect = document.getElementById("citySelect");
+      citySelect.innerHTML = "";
+      candidates.forEach(function(candidate, index) { const option = document.createElement("option"); option.value = index; option.textContent = cityLabel(candidate); citySelect.appendChild(option); });
+    }
+
+    async function fetchSelectedCityUV() {
+      const citySelect = document.getElementById("citySelect");
+      const rawSection = document.getElementById("rawSection");
+      const showRaw = document.getElementById("showRaw");
+      const rawResponse = document.getElementById("rawResponse");
+      const choice = candidates[Number(citySelect.value)];
+      if (!choice) return;
+      const label = cityLabel(choice);
+      const lat = Number(choice.latitude);
+      const lon = Number(choice.longitude);
+      showRaw.checked = false;
+      rawResponse.style.display = "none";
+      showStatusMessage("Fetching current UV Index for " + label + "...");
+      try {
+        const uvUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=uv_index";
+        const uvResponse = await fetch(uvUrl);
+        const uvData = await uvResponse.json();
+        rawApiResponse = uvData;
+        rawSection.style.display = "block";
+        const uvi = uvData.current && uvData.current.uv_index;
+        if (uvi === undefined || uvi === null) { showStatusMessage("UV Index not found in response."); return; }
+        currentUV = Number(uvi);
+        currentLocation = label;
+        updateDashboard();
+      } catch (error) { showStatusMessage("UV Index not found in response."); }
+    }
+
+    function cityLabel(candidate) { const name = candidate.name || ""; const regionParts = []; if (candidate.admin1) regionParts.push(candidate.admin1); if (candidate.country) regionParts.push(candidate.country); return name + (regionParts.length ? ", " + regionParts.join(", ") : ""); }
+
+    function updateDashboard() {
+      const risk = getRiskLevel(currentUV);
+      const guidance = getGuidance(currentUV);
+      const statusCard = document.getElementById("statusCard");
+      const riskName = document.getElementById("riskName");
+      const marker = document.getElementById("meterMarker");
+      const warningPanel = document.getElementById("warningPanel");
+      const warningText = document.getElementById("warningText");
+      const emptyState = document.getElementById("emptyState");
+      statusCard.className = "panel status-card " + risk.className;
+      document.getElementById("locationText").textContent = currentLocation;
+      document.getElementById("uviNumber").textContent = currentUV.toFixed(1);
+      riskName.textContent = risk.name;
+      riskName.style.background = risk.color;
+      marker.style.left = Math.min(currentUV, 11) / 11 * 100 + "%";
+      document.getElementById("spfValue").textContent = guidance.spf;
+      document.getElementById("reapplyValue").textContent = guidance.reapply;
+      document.getElementById("actionValue").textContent = guidance.action;
+      warningPanel.classList.toggle("active", currentUV >= 8);
+      warningText.textContent = currentUV >= 11 ? "Extreme UV today. Skin can burn quickly, so avoid direct midday sun, use SPF 50+, and cover exposed skin." : "Very high UV today. Use SPF 50, reapply often, wear sunglasses, and find shade whenever possible.";
+      emptyState.style.display = "none";
+      updatePlan();
+    }
+
+    function updatePlan() {
+      const planOutput = document.getElementById("planOutput");
+      const planList = document.getElementById("planList");
+      if (currentUV === null) { planOutput.classList.remove("active"); return; }
+      const sensitivityChoice = document.getElementById("sensitivity").value;
+      const skinToneChoice = document.getElementById("skinTone").value;
+      const activityChoice = document.getElementById("activity").value;
+      const timeOutsideValue = document.getElementById("timeOutside").value;
+      const sensitivity = sensitivityChoice || "average";
+      const skinTone = skinToneChoice || "medium";
+      const activity = activityChoice || "walking";
+      const guidance = getGuidance(currentUV);
+      const plan = [];
+      let spf = guidance.spf;
+      let reapply = guidance.reapply;
+      const timeOutside = Number(timeOutsideValue || 60);
+      if (sensitivity === "sensitive" && currentUV >= 3) spf = "SPF 50";
+      if (sensitivity === "very-sensitive" && currentUV >= 3) spf = "SPF 50+";
+      if ((skinTone === "very-fair" || skinTone === "fair") && currentUV >= 3) spf = "SPF 50";
+      if (skinTone === "very-fair" && currentUV >= 6) spf = "SPF 50+";
+      if (activity === "beach" || activity === "sports") reapply = currentUV >= 6 ? "Every 60 to 80 minutes" : "Every 90 minutes";
+      plan.push("Use " + spf + " before going outside.");
+      plan.push("Reapply sunscreen " + reapply.toLowerCase() + ".");
+      if (!sensitivityChoice || !skinToneChoice || !activityChoice || !timeOutsideValue) plan.push("Blank choices were estimated with average skin, medium skin tone, walking or errands, and about 1 hour outside.");
+      if (skinTone === "very-fair" || skinTone === "fair") plan.push("Because your skin tone can burn faster, add a hat and shade breaks even for shorter trips.");
+      else if (skinTone === "brown" || skinTone === "dark") plan.push("UV can still damage all skin tones, so sunscreen and eye protection still matter.");
+      if (currentUV >= 6 || timeOutside >= 120) plan.push("Bring a hat, sunglasses, and a light cover-up.");
+      if (currentUV >= 8) plan.push("Avoid direct sun from late morning through mid-afternoon.");
+      else if (currentUV >= 3) plan.push("Look for shade during the brightest part of the day.");
+      else plan.push("UV is lower, but protection still helps if you burn easily.");
+      if (activity === "beach") plan.push("Use water-resistant sunscreen and reapply after swimming or sweating.");
+      else if (activity === "sports") plan.push("Pack extra sunscreen because sweat can reduce protection.");
+      else if (activity === "school") plan.push("Keep sunscreen in your bag and choose shaded areas during breaks.");
+      if (timeOutside >= 180) plan.push("Plan a shade break every hour.");
+      planList.innerHTML = "";
+      plan.forEach(function(item) { const li = document.createElement("li"); li.textContent = item; planList.appendChild(li); });
+      planOutput.classList.add("active");
+    }
+
+    function showStatusMessage(message) {
+      document.getElementById("locationText").textContent = message;
+      document.getElementById("uviNumber").textContent = "--";
+      document.getElementById("riskName").textContent = "Waiting";
+      document.getElementById("riskName").style.background = "#111";
+      document.getElementById("meterMarker").style.left = "0%";
+      document.getElementById("spfValue").textContent = "Check a city";
+      document.getElementById("reapplyValue").textContent = "Check a city";
+      document.getElementById("actionValue").textContent = "Check a city";
+      document.getElementById("warningPanel").classList.remove("active");
+      document.getElementById("planOutput").classList.remove("active");
+      document.getElementById("emptyState").style.display = "block";
+    }
+
+    function getRiskLevel(uvi) {
+      if (uvi <= 2) return { name: "Low", className: "low", color: "#2f8f46" };
+      if (uvi <= 5) return { name: "Moderate", className: "moderate", color: "#e0a800" };
+      if (uvi <= 7) return { name: "High", className: "high", color: "#e86f1a" };
+      if (uvi <= 10) return { name: "Very High", className: "very-high", color: "#d92323" };
+      return { name: "Extreme", className: "extreme", color: "#7b2cbf" };
+    }
+
+    function getGuidance(uvi) {
+      if (uvi <= 2) return { spf: "SPF 15+", reapply: "Every 2 hours", action: "Enjoy, but protect sensitive skin if needed." };
+      if (uvi <= 5) return { spf: "SPF 30", reapply: "Every 2 hours", action: "Use shade at midday" };
+      if (uvi <= 7) return { spf: "SPF 50", reapply: "Every 90 minutes", action: "Cover up and seek shade" };
+      if (uvi <= 10) return { spf: "SPF 50", reapply: "Every 60 to 80 minutes", action: "Avoid direct midday sun" };
+      return { spf: "SPF 50+", reapply: "Every 60 minutes", action: "Stay shaded when possible" };
+    }
+
+    function toggleRawResponse() {
+      const showRaw = document.getElementById("showRaw");
+      const rawResponse = document.getElementById("rawResponse");
+      rawResponse.style.display = showRaw.checked ? "block" : "none";
+      rawResponse.textContent = showRaw.checked && rawApiResponse ? JSON.stringify(rawApiResponse, null, 2) : "";
+    }
+  </script>
+  <nav class="bottom-nav" style="position:fixed;left:0;right:0;bottom:0;height:56px;background:transparent;border-top:1px solid rgba(0,0,0,0.06);z-index:9999;" aria-hidden="true"></nav>
+</body>
+</html>
