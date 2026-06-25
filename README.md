@@ -1,7 +1,5 @@
 # SunSmart UV Tracker
-
-A small personal project for exploring UV index information and showing simplified SunSmart interface pages.
-
+https://amna8977.github.io/sunsmart/
 ## Project Contents
 
 - `SunSmartUVtracker.py` - A Python Streamlit app that:
