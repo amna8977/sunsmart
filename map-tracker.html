@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSmart Map UV Tracker</title>
+  <link rel="icon" type="image/x-icon" href="logo.ico">
+  <link rel="icon" type="image/png" href="SUN SMART.png">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="icon" type="image/jpeg" href="logo.jpeg">
+  <link rel="icon" type="image/webp" href="logo.webp">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #e7d7bd;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      width: 100%;
+      padding: 14px clamp(22px, 5vw, 56px);
+      border-bottom: 1px solid rgba(111, 82, 47, 0.28);
+      background: rgba(255, 252, 245, 0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 28px rgba(79, 54, 31, 0.12);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #111;
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .nav-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      background: #fbf5ea;
+    }
+
+    .nav-links a,
+    .nav-trigger {
+      width: auto;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 6px;
+      color: #111;
+      background: transparent;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-dropdown:hover .nav-trigger,
+    .nav-dropdown:focus-within .nav-trigger {
+      background: #efe2cc;
+      color: #111;
+    }
+
+    .nav-links a.active {
+      background: #7d6848;
+      color: #fff;
+    }
+
+    .nav-dropdown {
+      position: relative;
+      margin-left: 4px;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 20;
+      display: none;
+      min-width: 190px;
+      padding: 6px;
+      border: 1px solid rgba(111, 82, 47, 0.18);
+      border-radius: 8px;
+      background: #fffaf1;
+      box-shadow: 0 16px 40px rgba(79, 54, 31, 0.16);
+    }
+
+    .nav-dropdown:hover .nav-menu,
+    .nav-dropdown:focus-within .nav-menu,
+    .nav-dropdown.open .nav-menu {
+      display: grid;
+      gap: 4px;
+    }
+
+    .nav-menu a {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .map-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    #uvMap {
+      width: 100%;
+      height: 100%;
+      background: #d1cfbd;
+    }
+
+    .uv-panel {
+      position: fixed;
+      left: clamp(16px, 4vw, 42px);
+      bottom: clamp(16px, 4vw, 42px);
+      z-index: 700;
+      width: min(380px, calc(100% - 32px));
+      padding: 20px;
+      border: 1px solid rgba(93, 67, 35, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 250, 241, 0.94);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 48px rgba(39, 28, 17, 0.22);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .panel-kicker {
+      margin: 0 0 8px;
+      color: #7d6848;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .place-name {
+      margin: 0 0 12px;
+      font-size: clamp(24px, 6vw, 34px);
+      line-height: 1.05;
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid rgba(125, 104, 72, 0.28);
+      border-radius: 6px;
+      color: #111;
+      background: #fff;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .search-input:focus {
+      outline: 3px solid rgba(125, 104, 72, 0.2);
+      border-color: #7d6848;
+    }
+
+    .search-picker {
+      display: none;
+      margin: -4px 0 16px;
+    }
+
+    .search-picker label {
+      display: block;
+      margin-bottom: 6px;
+      color: #5b4a34;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .search-select {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 10px;
+      border: 1px solid rgba(125, 104, 72, 0.28);
+      border-radius: 6px;
+      color: #111;
+      background: #fff;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .uv-row {
+      display: flex;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .uv-value {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 0.9;
+    }
+
+    .risk-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #111;
+      background: #d6e87b;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .risk-low {
+      background: #b9e37a;
+    }
+
+    .risk-moderate {
+      background: #f5d76b;
+    }
+
+    .risk-high {
+      background: #f3a553;
+    }
+
+    .risk-very-high {
+      color: #fff;
+      background: #d45135;
+    }
+
+    .risk-extreme {
+      color: #fff;
+      background: #7d4ac7;
+    }
+
+    .guidance {
+      margin: 0;
+      color: #342b20;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .coords {
+      margin: 14px 0 0;
+      color: #6a5b47;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .panel-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .action-button {
+      min-height: 38px;
+      padding: 9px 12px;
+      border: 1px solid rgba(125, 104, 72, 0.28);
+      border-radius: 6px;
+      color: #111;
+      background: #fff;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .search-button {
+      min-height: 42px;
+      color: #fff;
+      background: #7d6848;
+    }
+
+    .action-button:hover {
+      background: #efe2cc;
+    }
+
+    .search-button:hover {
+      background: #66543a;
+    }
+
+    .leaflet-top {
+      top: 84px;
+    }
+
+    .leaflet-control-zoom a {
+      color: #111;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: #fffaf1;
+      transition: opacity 320ms ease, visibility 320ms ease;
+    }
+
+    .loading-screen.hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-card {
+      display: grid;
+      justify-items: center;
+      gap: 16px;
+      color: #7d6848;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .loading-logo {
+      width: 108px;
+      height: 108px;
+      object-fit: contain;
+      animation: logoBounce 780ms ease-in-out infinite alternate;
+      filter: drop-shadow(0 18px 18px rgba(79, 54, 31, 0.18));
+    }
+
+    .loading-dots::after {
+      content: "";
+      animation: loadingDots 1.2s steps(4, end) infinite;
+    }
+
+    @keyframes logoBounce {
+      from {
+        transform: translateY(0) scale(1);
+      }
+
+      to {
+        transform: translateY(-22px) scale(1.04);
+      }
+    }
+
+    @keyframes loadingDots {
+      0% {
+        content: "";
+      }
+
+      25% {
+        content: ".";
+      }
+
+      50% {
+        content: "..";
+      }
+
+      75%,
+      100% {
+        content: "...";
+      }
+    }
+
+    @media (max-width: 760px) {
+      .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .nav-menu {
+        right: auto;
+        left: 0;
+      }
+
+      .leaflet-top {
+        top: 138px;
+      }
+
+      .uv-panel {
+        bottom: 14px;
+        padding: 16px;
+      }
+
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+
+      .uv-value {
+        font-size: 52px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" aria-label="Loading SunSmart" aria-live="polite">
+    <div class="loading-card">
+      <img id="loadingLogo" class="loading-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <div>Loading SunSmart<span class="loading-dots"></span></div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <a class="nav-brand" href="index.html">
+      <img id="navLogo" class="nav-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <span>SunSmart</span>
+    </a>
+    <div class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-trigger" type="button" aria-expanded="false" onclick="toggleNavMenu(event)">UV Tracker</button>
+        <div class="nav-menu">
+          <a href="tracker-basic.html">Basic Tracker</a>
+          <a href="tracker.html">Advanced Tracker</a>
+          <a class="active" href="map-tracker.html">Tracker Map (Beta)</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="map-shell" aria-label="Map UV tracker">
+    <div id="uvMap"></div>
+    <section class="uv-panel" aria-live="polite">
+      <p class="panel-kicker">Map UV Tracker</p>
+      <form id="searchForm" class="search-form">
+        <label class="sr-only" for="placeSearch">Search for a place</label>
+        <input id="placeSearch" class="search-input" type="search" placeholder="Search city or place" autocomplete="off">
+        <button class="action-button search-button" type="submit">Search</button>
+      </form>
+      <div id="searchPicker" class="search-picker">
+        <label for="searchSelect">Select your place:</label>
+        <select id="searchSelect" class="search-select"></select>
+      </div>
+      <h1 id="placeName" class="place-name">Loading map...</h1>
+      <div class="uv-row">
+        <div id="uvValue" class="uv-value">--</div>
+        <div id="riskLevel" class="risk-pill">UV Index</div>
+      </div>
+      <p id="guidance" class="guidance">Move the map, zoom in, or tap a location to check the UV index there.</p>
+      <p id="coords" class="coords">Coordinates unavailable</p>
+      <div class="panel-actions">
+        <button id="centerButton" class="action-button" type="button">Use My Location</button>
+        <button id="refreshButton" class="action-button" type="button">Refresh UV</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const logoFiles = ["SUN SMART.png", "logo.ico", "logo.png", "logo.jpg", "logo.jpeg", "logo.webp"];
+    const placeName = document.getElementById("placeName");
+    const uvValue = document.getElementById("uvValue");
+    const riskLevel = document.getElementById("riskLevel");
+    const guidance = document.getElementById("guidance");
+    const coords = document.getElementById("coords");
+    const searchForm = document.getElementById("searchForm");
+    const placeSearch = document.getElementById("placeSearch");
+    const searchPicker = document.getElementById("searchPicker");
+    const searchSelect = document.getElementById("searchSelect");
+    const centerButton = document.getElementById("centerButton");
+    const refreshButton = document.getElementById("refreshButton");
+    let searchCandidates = [];
+    let marker;
+    let requestToken = 0;
+
+    function loadLogoFor(elementId, index) {
+      const logo = document.getElementById(elementId);
+
+      if (!logo) {
+        return;
+      }
+
+      if (index >= logoFiles.length) {
+        logo.style.display = "none";
+        return;
+      }
+
+      logo.onerror = function() {
+        loadLogoFor(elementId, index + 1);
+      };
+      logo.src = logoFiles[index];
+    }
+
+    function toggleNavMenu(event) {
+      const dropdown = event.currentTarget.closest(".nav-dropdown");
+      const isOpen = dropdown.classList.toggle("open");
+      event.currentTarget.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    document.addEventListener("click", function(event) {
+      document.querySelectorAll(".nav-dropdown.open").forEach(function(dropdown) {
+        if (!dropdown.contains(event.target)) {
+          dropdown.classList.remove("open");
+          const trigger = dropdown.querySelector(".nav-trigger");
+          if (trigger) {
+            trigger.setAttribute("aria-expanded", "false");
+          }
+        }
+      });
+    });
+
+    function hideLoadingScreen() {
+      const loadingScreen = document.getElementById("loadingScreen");
+      if (!loadingScreen) return;
+      loadingScreen.classList.add("hidden");
+    }
+
+    function classifyUv(value) {
+      if (value < 3) {
+        return {
+          label: "Low",
+          className: "risk-low",
+          advice: "Lower risk today, but sunscreen and sunglasses are still smart if you stay outside."
+        };
+      }
+
+      if (value < 6) {
+        return {
+          label: "Moderate",
+          className: "risk-moderate",
+          advice: "Use SPF 30+, sunglasses, and cover up during longer outdoor time."
+        };
+      }
+
+      if (value < 8) {
+        return {
+          label: "High",
+          className: "risk-high",
+          advice: "Use SPF 30+, wear a hat, and look for shade around midday."
+        };
+      }
+
+      if (value < 11) {
+        return {
+          label: "Very High",
+          className: "risk-very-high",
+          advice: "Strong protection is needed: SPF 30+, shade, hat, and sunglasses."
+        };
+      }
+
+      return {
+        label: "Extreme",
+        className: "risk-extreme",
+        advice: "Avoid midday sun when possible and use full sun protection if outside."
+      };
+    }
+
+    function formatPlace(data, lat, lon) {
+      const address = data && data.address ? data.address : {};
+      const primary = address.city || address.town || address.village || address.hamlet || address.suburb || address.county;
+      const secondary = address.state || address.region || address.country;
+
+      if (primary && secondary && primary !== secondary) {
+        return primary + ", " + secondary;
+      }
+
+      if (primary || secondary) {
+        return primary || secondary;
+      }
+
+      if (data && data.display_name) {
+        return data.display_name.split(",").slice(0, 2).join(",");
+      }
+
+      return lat.toFixed(3) + ", " + lon.toFixed(3);
+    }
+
+    function setPending(lat, lon) {
+      placeName.textContent = "Checking this spot...";
+      uvValue.textContent = "--";
+      riskLevel.className = "risk-pill";
+      riskLevel.textContent = "Loading";
+      guidance.textContent = "Getting the place name and live UV index for the map center.";
+      coords.textContent = lat.toFixed(4) + ", " + lon.toFixed(4);
+    }
+
+    function normalizeLongitude(lon) {
+      return ((((lon + 180) % 360) + 360) % 360) - 180;
+    }
+
+    async function getPlaceName(lat, lon, zoom) {
+      const url = new URL("https://nominatim.openstreetmap.org/reverse");
+      url.searchParams.set("format", "jsonv2");
+      url.searchParams.set("lat", lat);
+      url.searchParams.set("lon", lon);
+      url.searchParams.set("zoom", Math.max(3, Math.min(18, zoom)));
+      url.searchParams.set("addressdetails", "1");
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Place lookup failed");
+      }
+
+      return response.json();
+    }
+
+    async function searchPlaces(query) {
+      const url = new URL("https://nominatim.openstreetmap.org/search");
+      url.searchParams.set("format", "jsonv2");
+      url.searchParams.set("q", query);
+      url.searchParams.set("limit", "8");
+      url.searchParams.set("addressdetails", "1");
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Search failed");
+      }
+
+      const results = await response.json();
+
+      if (!results.length) {
+        throw new Error("No search results");
+      }
+
+      return results;
+    }
+
+    function searchResultLabel(result) {
+      const address = result.address || {};
+      const primary = result.name || address.city || address.town || address.village || address.hamlet || address.suburb;
+      const regionParts = [];
+
+      if (address.state) {
+        regionParts.push(address.state);
+      }
+
+      if (address.country) {
+        regionParts.push(address.country);
+      }
+
+      if (primary) {
+        return primary + (regionParts.length ? ", " + regionParts.join(", ") : "");
+      }
+
+      return result.display_name || "Unknown place";
+    }
+
+    function buildSearchSelect() {
+      searchSelect.innerHTML = "";
+
+      searchCandidates.forEach(function(candidate, index) {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = searchResultLabel(candidate);
+        searchSelect.appendChild(option);
+      });
+    }
+
+    function selectSearchCandidate(index) {
+      const result = searchCandidates[index];
+
+      if (!result) {
+        return;
+      }
+
+      const lat = Number(result.lat);
+      const lon = Number(result.lon);
+      const targetZoom = Math.max(map.getZoom(), 10);
+
+      map.setView([lat, lon], targetZoom);
+      updateLocation(lat, lon);
+    }
+
+    function nearestHourlyUv(data) {
+      if (!data.hourly || !data.hourly.time || !data.hourly.uv_index) {
+        return null;
+      }
+
+      const now = Date.now();
+      let bestIndex = 0;
+      let bestDistance = Infinity;
+
+      data.hourly.time.forEach(function(time, index) {
+        const distance = Math.abs(new Date(time).getTime() - now);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = index;
+        }
+      });
+
+      return data.hourly.uv_index[bestIndex];
+    }
+
+    async function getUvIndex(lat, lon) {
+      const url = new URL("https://api.open-meteo.com/v1/forecast");
+      url.searchParams.set("latitude", lat);
+      url.searchParams.set("longitude", lon);
+      url.searchParams.set("current", "uv_index");
+      url.searchParams.set("hourly", "uv_index");
+      url.searchParams.set("forecast_days", "1");
+      url.searchParams.set("timezone", "auto");
+
+      const response = await fetch(url.toString());
+
+      if (!response.ok) {
+        throw new Error("UV lookup failed");
+      }
+
+      const data = await response.json();
+      return data.current && typeof data.current.uv_index === "number" ? data.current.uv_index : nearestHourlyUv(data);
+    }
+
+    async function updateLocation(lat, lon) {
+      const token = ++requestToken;
+      const normalizedLon = normalizeLongitude(lon);
+      const zoom = map.getZoom();
+      setPending(lat, normalizedLon);
+
+      try {
+        const placeResult = await getPlaceName(lat, normalizedLon, zoom);
+        const uv = await getUvIndex(lat, normalizedLon);
+
+        if (token !== requestToken) {
+          return;
+        }
+
+        if (typeof uv !== "number") {
+          throw new Error("UV data unavailable");
+        }
+
+        const risk = classifyUv(uv);
+        placeName.textContent = formatPlace(placeResult, lat, lon);
+        uvValue.textContent = uv.toFixed(1);
+        riskLevel.className = "risk-pill " + risk.className;
+        riskLevel.textContent = risk.label;
+        guidance.textContent = risk.advice;
+        coords.textContent = lat.toFixed(4) + ", " + normalizedLon.toFixed(4);
+        marker.setLatLng([lat, normalizedLon]);
+      } catch (error) {
+        if (token !== requestToken) {
+          return;
+        }
+
+        placeName.textContent = "Could not check this spot";
+        uvValue.textContent = "--";
+        riskLevel.className = "risk-pill";
+        riskLevel.textContent = "Unavailable";
+        guidance.textContent = "Check your connection, then move the map or refresh the UV reading.";
+        coords.textContent = lat.toFixed(4) + ", " + normalizedLon.toFixed(4);
+      }
+    }
+
+    function updateFromCenter() {
+      const center = map.getCenter();
+      updateLocation(center.lat, center.lng);
+    }
+
+    function debounce(fn, delay) {
+      let timer;
+      return function() {
+        clearTimeout(timer);
+        timer = setTimeout(fn, delay);
+      };
+    }
+
+    loadLogoFor("navLogo", 0);
+    loadLogoFor("loadingLogo", 0);
+
+    const map = L.map("uvMap", {
+      minZoom: 2,
+      maxBounds: [[-85, -100000], [85, 100000]],
+      maxBoundsViscosity: 1,
+      worldCopyJump: true,
+      zoomControl: true
+    }).setView([39.8283, -98.5795], 5);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      minZoom: 2,
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    marker = L.marker(map.getCenter()).addTo(map);
+
+    map.on("click", function(event) {
+      map.panTo(event.latlng);
+      updateLocation(event.latlng.lat, event.latlng.lng);
+    });
+
+    map.on("moveend zoomend", debounce(updateFromCenter, 450));
+
+    searchForm.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const query = placeSearch.value.trim();
+
+      if (!query) {
+        guidance.textContent = "Type a city, park, beach, or address to search the map.";
+        return;
+      }
+
+      placeName.textContent = "Searching...";
+      uvValue.textContent = "--";
+      riskLevel.className = "risk-pill";
+      riskLevel.textContent = "Search";
+      guidance.textContent = "Looking for " + query + ".";
+
+      try {
+        searchCandidates = await searchPlaces(query);
+        buildSearchSelect();
+        searchPicker.style.display = searchCandidates.length > 1 ? "block" : "none";
+        searchSelect.value = "0";
+        selectSearchCandidate(0);
+      } catch (error) {
+        searchCandidates = [];
+        searchPicker.style.display = "none";
+        placeName.textContent = "Place not found";
+        riskLevel.className = "risk-pill";
+        riskLevel.textContent = "Try again";
+        guidance.textContent = "Search for a more specific place, like Portland OR or Santa Monica Pier.";
+      }
+    });
+
+    searchSelect.addEventListener("change", function() {
+      selectSearchCandidate(Number(searchSelect.value));
+    });
+
+    centerButton.addEventListener("click", function() {
+      if (!navigator.geolocation) {
+        guidance.textContent = "Your browser does not have location access available.";
+        return;
+      }
+
+      guidance.textContent = "Finding your location...";
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        map.setView([lat, lon], 12);
+        updateLocation(lat, lon);
+      }, function() {
+        guidance.textContent = "Location permission was not allowed, so the map center is still being used.";
+      });
+    });
+
+    refreshButton.addEventListener("click", updateFromCenter);
+
+    window.addEventListener("load", function() {
+      setTimeout(hideLoadingScreen, 180);
+      setTimeout(function() {
+        map.invalidateSize();
+        updateFromCenter();
+      }, 220);
+    });
+  </script>
+</body>
+</html>

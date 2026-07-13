@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSmart</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page-content {
+      padding: 8px;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: #fffaf1;
+      transition: opacity 320ms ease, visibility 320ms ease;
+    }
+
+    .loading-screen.hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-card {
+      display: grid;
+      justify-items: center;
+      gap: 16px;
+      color: #7d6848;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .loading-logo {
+      width: 108px;
+      height: 108px;
+      object-fit: contain;
+      animation: logoBounce 780ms ease-in-out infinite alternate;
+      filter: drop-shadow(0 18px 18px rgba(79, 54, 31, 0.18));
+    }
+
+    .loading-dots::after {
+      content: "";
+      animation: loadingDots 1.2s steps(4, end) infinite;
+    }
+
+    @keyframes logoBounce {
+      from {
+        transform: translateY(0) scale(1);
+      }
+
+      to {
+        transform: translateY(-22px) scale(1.04);
+      }
+    }
+
+    @keyframes loadingDots {
+      0% {
+        content: "";
+      }
+
+      25% {
+        content: ".";
+      }
+
+      50% {
+        content: "..";
+      }
+
+      75%,
+      100% {
+        content: "...";
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" aria-label="Loading SunSmart" aria-live="polite">
+    <div class="loading-card">
+      <img id="loadingLogo" class="loading-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <div>Loading SunSmart<span class="loading-dots"></span></div>
+    </div>
+  </div>
+  <main class="page-content">
+    <h1>Congressional app challenge forum submission answers</h1>
+    <p># Please briefly describe what your app does? *
+    ``My app, The Sunsmart UV tracker, educates people about UV protection and and provides skin cancer awareness and protection tips based on the information you put in the tracker.
+
+# What inspired you to create this app? *
+``When i was at the NBA health fair for my nonprofit Cansersense , there was a stand in which dermatologists gave screenings for skin cancer. Talking to these dermatologists, i realised that skin canser is a huge problen in the  united states, and out here in nevada, we get some of the highest UV levels in the country! when i came home later that day, i got an idea to take the orginization i founded a step further- creating an app that coud inform anyone, anywhere of how the object that lights their world could also be dangerous to us. The app I was building would be a tracker of sorts, one that could be accessible anywhere, through any device, custumisable with the information the user gave it.
+
+# What technical difficulties did you face programming your app? *
+``Overall, the main difficulties was in getting the front-end (graphic design) layout to feel neat and polished, rather than in complex backend code that let me have the customized results for each input you put in the app. One problem in particular was trying to make a loading screen when opening the app (you can see it for yourself then you try the website out!). In the beginning, i had to learn to figure out how to communicate with computer itself to tell my code when to show the loading scree. It took so much effort to do this, but in the end, it looks cute and might be one of the little features i am mont proud of!
+
+# If you used AI, tell us how you used it and what your team contributed directly. Please list the AI tools you used and briefly explain how they helped. Then describe what your team designed, coded, changed, tested, or finalized yourselves.
+``When i was creating this app, there was some aspects to the CSS, the stylesheet of the HTML page, that were comlicated and beyond my knowledge of coding. I used AI to help me style some the pages to give them an neat, clean look.
+
+# What improvements would you make if you were to create a 2.0 version of your app? *
+``If i were to make a 2.0 version of my aff, i would add fearures like a map that told you exactly the UV levels around you. I would also make a more simplified section so that younger audiences could better understand how to protect tehselves from the UV light
+
+# What did you learn or take away from participating in the Congressional App Challenge? *
+``Throughout mu journey of creating this app, I learned so many useful skills. Reflecting on my experience of creating this app, i realize the best part of creating this app wasnt the making of the app, but the thought of one less death to skin cancer that i might have prevented becaused somei=one used my app
+    </p>
+
+  </main>
+  <nav class="bottom-nav" style="position:fixed !important;left:0 !important;right:0 !important;bottom:0 !important;width:100% !important;margin:0 !important;height:56px;background:#000000;border-top:1px solid rgba(255,255,255,0.12);z-index:99999 !important;transform:none !important;" aria-hidden="true"></nav>
+  <script>
+    const logoFiles = ["SUN SMART.png", "logo.ico", "logo.png", "logo.jpg", "logo.jpeg", "logo.webp"];
+
+    function loadLogoFor(elementId, index) {
+      const logo = document.getElementById(elementId);
+
+      if (!logo) {
+        return;
+      }
+
+      if (index >= logoFiles.length) {
+        logo.style.display = "none";
+        return;
+      }
+
+      logo.onerror = function() {
+        loadLogoFor(elementId, index + 1);
+      };
+      logo.src = logoFiles[index];
+    }
+
+    loadLogoFor("loadingLogo", 0);
+
+    window.addEventListener("load", function() {
+      const loadingScreen = document.getElementById("loadingScreen");
+
+      if (!loadingScreen) {
+        return;
+      }
+
+      setTimeout(function() {
+        loadingScreen.classList.add("hidden");
+      }, 180);
+    });
+  </script>
+</body>
+</html>
