@@ -1,18 +1,19 @@
 # SunSmart UV Tracker
-UV, or ultraviolet light, is a big problem during the summer. My app, the SunSmart UV Tracker, educates people about UV protection and provides skin cancer awareness and protection tips based on the information you put in the tracker. The tracker's uses vary, from a real-time UV-tracking map that provides data for specific places to a camera that analyzes your skin tone to make an accurate report. Some safety measures you should use throughout the day
-View the website here!: 
+UV, or ultraviolet light, is a big problem during the summer. My app, the SunSmart UV Tracker, educates people about UV protection and provides skin cancer awareness and protection tips based on the information you put in the tracker. The tracker's uses vary, from a real-time UV-tracking map that provides data for specific places to a camera that analyzes your skin tone to make an accurate report of skin protection measures you should take throughout the day. Some safety measures you should use throughout the day.
+-View the website here!: 
 https://amna8977.github.io/sunsmart/
 
 ## Project Contents
 
-- `SunSmartUVtracker.py` - A Python Streamlit app that:
+- `SunSmartUVtracker.py` - A Python app that:
   - accepts a city name from the user
   - looks up matching locations via the Open-Meteo geocoding API
   - fetches the current UV index for the selected location
   - displays UV guidance and optional raw API output
 - `index.html` - Main SunSmart home page.
-- `tracker.html` - A more advanced UV tracker page.
-- `tracker-basic.html` - A simpler UV tracker page.
+- `tracker.html` - A more advanced UV tracker page with a camera that analyzes your skin tone to make an accurate report of skin protection measures you should take throughout the day.
+- `tracker-basic.html` - A UV tracker page with pure facts for a simpler experience.
+- `map-tracker.html` - A real-time UV-tracking map that provides data for specific places
 
 ## Getting Started
 
@@ -32,7 +33,5 @@ https://amna8977.github.io/sunsmart/
 
 
 ## Notes
-
 - The app uses the Open-Meteo geocoding API and forecast API.
-- The HTML files are static examples and do not require a server.
 
