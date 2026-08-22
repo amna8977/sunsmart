@@ -34,5 +34,7 @@ https://amna8977.github.io/sunsmart/
 
 
 ## Notes
-- The app uses the Open-Meteo geocoding API and forecast API.
+- The app uses the Open-Meteo geocoding API, forecast API, and OpenStreetMap API
+
+.
 
