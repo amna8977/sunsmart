@@ -10,21 +10,41 @@
   <link rel="icon" type="image/jpeg" href="logo.jpg">
   <link rel="icon" type="image/jpeg" href="logo.jpeg">
   <link rel="icon" type="image/webp" href="logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --ink: #25313c;
+      --muted: #65727d;
+      --canvas: #ffffff;
+      --surface: #ffffff;
+      --surface-soft: #fff5bd;
+      --accent: #ef7047;
+      --accent-dark: #24766e;
+      --line: rgba(36, 118, 110, 0.18);
+      --shadow: rgba(37, 49, 60, 0.12);
+    }
+
     * {
       box-sizing: border-box;
+      font-family: "Playfair Display", serif;
+      font-optical-sizing: auto;
+      font-style: normal;
     }
 
     html {
-      background: #ffffff;
+      background: var(--canvas);
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: #111;
-      background: #ffffff;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 16%, #fff5bd 0, transparent 24%),
+        radial-gradient(circle at 94% 38%, #d9f4ef 0, transparent 28%),
+        var(--canvas);
     }
 
     .navbar {
@@ -37,17 +57,17 @@
       gap: 24px;
       width: 100%;
       padding: 14px clamp(22px, 5vw, 56px);
-      border-bottom: 1px solid rgba(111, 82, 47, 0.28);
-      background: rgba(255, 252, 245, 0.96);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 250, 241, 0.94);
       backdrop-filter: blur(12px);
-      box-shadow: 0 10px 28px rgba(79, 54, 31, 0.12);
+      box-shadow: 0 10px 28px var(--shadow);
     }
 
     .nav-brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #111;
+      color: var(--ink);
       font-size: 18px;
       font-weight: 800;
       text-decoration: none;
@@ -66,7 +86,7 @@
       padding: 6px;
       border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: 8px;
-      background: #fbf5ea;
+      background: var(--surface);
     }
 
     .nav-links a,
@@ -75,7 +95,7 @@
       border: 0;
       border-radius: 6px;
       width: auto;
-      color: #111;
+      color: var(--ink);
       background: transparent;
       font: inherit;
       font-weight: 700;
@@ -87,12 +107,12 @@
     .nav-links a:hover,
     .nav-dropdown:hover .nav-trigger,
     .nav-dropdown:focus-within .nav-trigger {
-      background: #efe2cc;
-      color: #111;
+      background: var(--surface-soft);
+      color: var(--ink);
     }
 
     .nav-links a.active {
-      background: #7d6848;
+      background: var(--accent);
       color: #fff;
     }
 
@@ -111,7 +131,7 @@
       padding: 6px;
       border: 1px solid rgba(111, 82, 47, 0.18);
       border-radius: 8px;
-      background: #fffaf1;
+      background: var(--surface);
       box-shadow: 0 16px 40px rgba(79, 54, 31, 0.16);
     }
 
@@ -187,11 +207,99 @@
       align-items: start;
     }
 
+    .camera-spotlight {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 22px;
+      padding: 22px 26px;
+      overflow: hidden;
+      border: 1px solid rgba(36, 118, 110, 0.22);
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(255, 225, 122, 0.48), transparent 38%),
+        linear-gradient(135deg, #e6f8f4, #ffffff 65%);
+      box-shadow: 0 14px 38px rgba(36, 118, 110, 0.12);
+    }
+
+    .feature-badge {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 12px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--accent);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .camera-spotlight h2 {
+      margin: 0 0 12px;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.08;
+    }
+
+    .camera-spotlight .feature-copy > p {
+      max-width: 540px;
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .camera-workspace {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 14px 36px rgba(37, 49, 60, 0.1);
+    }
+
+    .camera-spotlight .camera-launch {
+      flex: 0 0 auto;
+      width: auto;
+      min-width: 190px;
+    }
+
+    .camera-tools-inline {
+      margin: 4px 0 20px;
+      padding: 16px;
+      border: 1px solid rgba(36, 118, 110, 0.2);
+      border-radius: 10px;
+      background: #f1fbf8;
+    }
+
+    .camera-tools-inline h4 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .camera-tools-inline > p {
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .camera-launch {
+      padding: 15px 18px !important;
+      color: #fff !important;
+      background: var(--accent-dark) !important;
+      font-size: 17px !important;
+    }
+
+    .camera-launch:hover {
+      background: #185e58 !important;
+    }
+
     .panel {
       border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: 8px;
       padding: 24px;
-      background: #fff;
+      background: var(--surface);
       box-shadow: 0 16px 50px rgba(0, 0, 0, 0.07);
     }
 
@@ -221,7 +329,7 @@
       border: 1px solid #b8b8b8;
       border-radius: 6px;
       font-size: 16px;
-      background: #fff;
+      background: var(--surface);
     }
 
     button {
@@ -230,7 +338,7 @@
       border: 0;
       border-radius: 6px;
       color: #fff;
-      background: #111;
+      background: var(--accent-dark);
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
@@ -291,7 +399,7 @@
       padding: 7px 10px;
       border-radius: 6px;
       color: #fff;
-      background: #111;
+      background: var(--accent-dark);
       font-size: 14px;
       font-weight: 900;
       letter-spacing: 0.02em;
@@ -319,7 +427,7 @@
       height: 28px;
       border: 2px solid #fff;
       border-radius: 999px;
-      background: #111;
+      background: var(--accent-dark);
       transform: translateX(-50%);
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
     }
@@ -343,7 +451,7 @@
       padding: 16px;
       border: 1px solid #e1e1e1;
       border-radius: 8px;
-      background: #fafafa;
+      background: var(--surface);
     }
 
     .metric span {
@@ -395,7 +503,7 @@
       padding: 12px 14px;
       border: 1px solid #e0e0e0;
       border-radius: 8px;
-      background: #fafafa;
+      background: var(--surface);
       font-weight: 700;
       line-height: 1.4;
     }
@@ -495,7 +603,7 @@
       width: 100%;
       overflow: hidden;
       border-radius: 8px;
-      background: #111;
+      background: var(--accent-dark);
       aspect-ratio: 4 / 3;
       object-fit: cover;
     }
@@ -530,7 +638,7 @@
       padding: 14px;
       border: 1px solid #ddd;
       border-radius: 6px;
-      background: #fafafa;
+      background: var(--surface);
       font-size: 14px;
       white-space: pre-wrap;
     }
@@ -540,6 +648,15 @@
       .hero-panel,
       .status-card {
         grid-template-columns: 1fr;
+      }
+
+      .camera-spotlight {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .camera-spotlight .camera-launch {
+        width: 100%;
       }
 
       .site-logo {
@@ -588,7 +705,7 @@
       display: grid;
       justify-items: center;
       gap: 16px;
-      color: #7d6848;
+      color: var(--accent);
       font-weight: 900;
       letter-spacing: 0.02em;
       text-align: center;
@@ -663,7 +780,7 @@
         <div class="nav-menu">
           <a href="tracker-basic.html">Basic Tracker</a>
           <a class="active" href="tracker.html">Advanced Tracker</a>
-          <a href="map-tracker.html">Tracker Map (Beta)</a>
+          <a href="map-tracker.html">Map Tracker</a>
         </div>
       </div>
     </div>
@@ -672,10 +789,19 @@
   <main>
     <section class="hero-panel" aria-label="SunSmart UV Tracker introduction">
       <div>
-        <h1>Advanced UV Tracker</h1>
-        <p class="lead">Check your local UV level, see the risk instantly, and build a protection plan before you go outside.</p>
+        <h1>The Advanced UV Tracker</h1>
+        <p class="lead">Use the camera-powered skin tone tool, check your local UV level, and build a more personal protection plan before you go outside.</p>
       </div>
       <img id="siteLogo" class="site-logo" src="SUN SMART.png" alt="SunSmart UV Tracker logo">
+    </section>
+
+    <section class="camera-spotlight" aria-labelledby="cameraFeatureTitle">
+      <div class="feature-copy">
+        <span class="feature-badge">Try this out!</span>
+        <h2 id="cameraFeatureTitle">Try the SunSmart Skin Tone Camera</h2>
+        <p>Estimate your skin tone on this device, then use it as one part of your personalized sun-safety plan.</p>
+      </div>
+      <button class="camera-launch" type="button" onclick="focusCameraTools()">Try the Camera</button>
     </section>
 
     <div class="app-grid">
@@ -684,7 +810,7 @@
         <p>Start with a city, then add your plans to get personalized sun safety guidance.</p>
 
         <label for="city">City</label>
-        <input id="city" type="text" placeholder="Example: Portland, OR">
+        <input id="city" type="text" placeholder="Example: Carson City, NV">
 
         <button type="button" onclick="checkUV()">Get UV Index</button>
 
@@ -713,32 +839,32 @@
           <option value="dark">Dark</option>
         </select>
 
-        <div class="tone-tools">
-          <button type="button" onclick="openToneChooser()">Use Camera or Photo</button>
-          <button id="savedPhotoButton" type="button" onclick="useSavedSkinPhoto()" hidden>Use Saved Photo</button>
-          <label class="save-photo-choice" for="saveSkinPhotoChoice">
-            <input id="saveSkinPhotoChoice" type="checkbox" checked>
-            Save this as my last saved photo
-          </label>
-          <p id="skinToneStatus" class="tone-note">Optional: estimate your skin tone with your camera or a photo. A small local photo sample can be saved on this device; nothing is uploaded.</p>
-        </div>
-
-        <div id="toneChooser" class="tone-chooser">
-          <button type="button" onclick="startSkinCamera()">Use Live Camera</button>
-          <label class="photo-upload" for="skinImageInput">
-            Choose From Camera Roll
-            <input id="skinImageInput" type="file" accept="image/*" onchange="detectSkinToneFromFile(event)">
-          </label>
-        </div>
-
-        <div id="cameraPanel" class="camera-panel">
-          <video id="skinVideo" class="skin-video" autoplay playsinline muted></video>
-          <p class="tone-note">Point the center of the camera at your forearm or hand in natural light, then detect.</p>
-          <div class="camera-actions">
-            <button type="button" onclick="captureSkinTone()">Detect Tone</button>
-            <button type="button" onclick="stopSkinCamera()">Cancel</button>
+        <div id="cameraTools" class="camera-tools-inline">
+          <h4>Camera or Photo</h4>
+          <p>Optional: estimate your skin tone locally. Nothing is uploaded.</p>
+          <div class="tone-tools">
+            <button class="camera-launch" type="button" onclick="openToneChooser()">Use Camera or Photo</button>
+            <button id="savedPhotoButton" type="button" onclick="useSavedSkinPhoto()" hidden>Use Saved Photo</button>
+            <p id="skinToneStatus" class="tone-note">Choose the live camera or a photo from your device to begin.</p>
           </div>
-          <canvas id="skinCanvas" class="skin-canvas" width="80" height="80"></canvas>
+
+          <div id="toneChooser" class="tone-chooser">
+            <button type="button" onclick="startSkinCamera()">Use Live Camera</button>
+            <label class="photo-upload" for="skinImageInput">
+              Choose From Camera Roll
+              <input id="skinImageInput" type="file" accept="image/*" onchange="detectSkinToneFromFile(event)">
+            </label>
+          </div>
+
+          <div id="cameraPanel" class="camera-panel">
+            <video id="skinVideo" class="skin-video" autoplay playsinline muted></video>
+            <p class="tone-note">Point the center of the camera at your forearm or hand in natural light, then detect.</p>
+            <div class="camera-actions">
+              <button type="button" onclick="captureSkinTone()">Detect Tone</button>
+              <button type="button" onclick="stopSkinCamera()">Cancel</button>
+            </div>
+            <canvas id="skinCanvas" class="skin-canvas" width="80" height="80"></canvas>
+          </div>
         </div>
 
         <label for="activity">Outdoor activity</label>
@@ -943,6 +1069,13 @@
       if (chooser) chooser.classList.toggle("active");
     }
 
+    function focusCameraTools() {
+      const tools = document.getElementById("cameraTools");
+      const chooser = document.getElementById("toneChooser");
+      if (chooser) chooser.classList.add("active");
+      if (tools) tools.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
     function saveManualSkinTone() {
       const skinTone = document.getElementById("skinTone").value;
       if (skinTone) {
@@ -1038,8 +1171,24 @@
     }
 
     function averageColors(colors) {
-      const total = colors.reduce(function(sum, color) { return { r: sum.r + color.r, g: sum.g + color.g, b: sum.b + color.b }; }, { r: 0, g: 0, b: 0 });
-      return { r: Math.round(total.r / colors.length), g: Math.round(total.g / colors.length), b: Math.round(total.b / colors.length) };
+      const total = colors.reduce(function(sum, color) {
+        return {
+          r: sum.r + color.r,
+          g: sum.g + color.g,
+          b: sum.b + color.b,
+          skinRatio: sum.skinRatio + color.skinRatio,
+          brightnessSpread: sum.brightnessSpread + color.brightnessSpread,
+          texture: sum.texture + color.texture
+        };
+      }, { r: 0, g: 0, b: 0, skinRatio: 0, brightnessSpread: 0, texture: 0 });
+      return {
+        r: Math.round(total.r / colors.length),
+        g: Math.round(total.g / colors.length),
+        b: Math.round(total.b / colors.length),
+        skinRatio: total.skinRatio / colors.length,
+        brightnessSpread: total.brightnessSpread / colors.length,
+        texture: total.texture / colors.length
+      };
     }
 
     function stopSkinCamera() {
@@ -1070,15 +1219,51 @@
       const sourceX = (width - sourceSize) / 2;
       const sourceY = (height - sourceSize) / 2;
       let r = 0; let g = 0; let b = 0; let count = 0;
+      let skinPixels = 0; let brightnessTotal = 0; let brightnessSquaredTotal = 0;
+      let textureTotal = 0; let textureComparisons = 0;
       canvas.width = sampleSize;
       canvas.height = sampleSize;
       context.drawImage(source, sourceX, sourceY, sourceSize, sourceSize, 0, 0, sampleSize, sampleSize);
       const data = context.getImageData(0, 0, sampleSize, sampleSize).data;
-      for (let i = 0; i < data.length; i += 4) { r += data[i]; g += data[i + 1]; b += data[i + 2]; count += 1; }
-      return { r: Math.round(r / count), g: Math.round(g / count), b: Math.round(b / count) };
+      for (let i = 0; i < data.length; i += 4) {
+        const pixelR = data[i];
+        const pixelG = data[i + 1];
+        const pixelB = data[i + 2];
+        const brightness = (pixelR * 0.299) + (pixelG * 0.587) + (pixelB * 0.114);
+        r += pixelR; g += pixelG; b += pixelB; count += 1;
+        brightnessTotal += brightness;
+        brightnessSquaredTotal += brightness * brightness;
+        if (isSkinPixel(pixelR, pixelG, pixelB)) skinPixels += 1;
+
+        if ((i / 4) % sampleSize !== 0) {
+          const previousBrightness = (data[i - 4] * 0.299) + (data[i - 3] * 0.587) + (data[i - 2] * 0.114);
+          textureTotal += Math.abs(brightness - previousBrightness);
+          textureComparisons += 1;
+        }
+      }
+      const averageBrightness = brightnessTotal / count;
+      const brightnessVariance = Math.max(0, (brightnessSquaredTotal / count) - (averageBrightness * averageBrightness));
+      return {
+        r: Math.round(r / count),
+        g: Math.round(g / count),
+        b: Math.round(b / count),
+        skinRatio: skinPixels / count,
+        brightnessSpread: Math.sqrt(brightnessVariance),
+        texture: textureTotal / Math.max(1, textureComparisons)
+      };
     }
 
-    function shouldSaveDetectedPhoto() { const saveChoice = document.getElementById("saveSkinPhotoChoice"); return !saveChoice || saveChoice.checked; }
+    function isSkinPixel(r, g, b) {
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const cb = 128 - (0.169 * r) - (0.331 * g) + (0.5 * b);
+      const cr = 128 + (0.5 * r) - (0.419 * g) - (0.081 * b);
+      const rgbShape = r > 35 && g > 25 && b > 18 && (max - min) > 10 && r >= g - 18 && r > b - 5;
+      const skinChrominance = cb >= 75 && cb <= 137 && cr >= 128 && cr <= 180;
+      return rgbShape && skinChrominance;
+    }
+
+    function shouldSaveDetectedPhoto() { return false; }
 
     function saveSkinPhotoSample() {
       const canvas = document.getElementById("skinCanvas");
@@ -1089,17 +1274,18 @@
     function applyDetectedSkinTone(color, shouldSavePhoto, detailMessage) {
       const skinToneSelect = document.getElementById("skinTone");
       const chooser = document.getElementById("toneChooser");
-      if (!isLikelySkinColor(color.r, color.g, color.b)) { updateSkinToneStatus("That sample does not look like skin. Try your forearm or hand in natural light, centered in the camera/photo."); return; }
+      if (!isLikelySkinSample(color)) { updateSkinToneStatus("No clear skin sample was detected. Use a close-up of a bare forearm or hand in even natural light—avoid faces, pets, clothing, shadows, and patterned backgrounds."); return; }
       const tone = classifySkinTone(color.r, color.g, color.b);
       skinToneSelect.value = tone;
       const saveChoice = shouldSavePhoto && shouldSaveDetectedPhoto();
-      const saveMessage = shouldSavePhoto ? (saveChoice ? "Saved this as your last saved photo." : "Did not replace your saved photo.") : "";
+      const saveMessage = shouldSavePhoto ? (saveChoice ? "Saved this as your last saved photo." : "Photo was not saved.") : "";
       if (saveChoice) saveSkinPhotoSample(); else updateSavedPhotoButton();
       updateSkinToneStatus("Estimated " + skinToneLabels[tone] + " skin tone. " + detailMessage + " " + saveMessage + " Lighting can affect results.");
       if (chooser) chooser.classList.remove("active"); updatePlan();
     }
 
-    function isLikelySkinColor(r, g, b) {
+    function isLikelySkinSample(sample) {
+      const r = sample.r; const g = sample.g; const b = sample.b;
       const max = Math.max(r, g, b); const min = Math.min(r, g, b);
       const brightness = (r * 0.299) + (g * 0.587) + (b * 0.114);
       const saturationRange = max - min;
@@ -1108,7 +1294,11 @@
       const notTooBrightOrDark = brightness > 45 && brightness < 245;
       const channelBalance = g > 35 && r > 45 && b > 25;
       const notStrongGreenBlue = g < r + 70 && b < r + 55;
-      return warmEnough && notTooGray && notTooBrightOrDark && channelBalance && notStrongGreenBlue;
+      const mostlySkinPixels = sample.skinRatio >= 0.62;
+      const evenlyLit = sample.brightnessSpread <= 42;
+      const notHighlyTextured = sample.texture <= 20;
+      return warmEnough && notTooGray && notTooBrightOrDark && channelBalance &&
+        notStrongGreenBlue && mostlySkinPixels && evenlyLit && notHighlyTextured;
     }
 
     function classifySkinTone(r, g, b) {
@@ -1143,7 +1333,7 @@
         const searchResponse = await fetch(searchUrl);
         const searchData = await searchResponse.json();
         const matchingCandidates = filterCandidates(searchData.results || [], locationQuery);
-        if (matchingCandidates.length === 0) { showStatusMessage("No results found. Try a more specific query like Portland, OR."); hideLoadingScreen(); return; }
+        if (matchingCandidates.length === 0) { showStatusMessage("No results found. Try a more specific query like Carson City, NV."); hideLoadingScreen(); return; }
         candidates = prioritizeCandidates(matchingCandidates, locationQuery);
         buildCitySelect();
         cityPicker.style.display = "block";
@@ -1324,7 +1514,7 @@
       rawResponse.textContent = showRaw.checked && rawApiResponse ? JSON.stringify(rawApiResponse, null, 2) : "";
     }
   </script>
-  <nav class="bottom-nav hidden-on-scroll" style="width:100%;margin:0;height:56px;background:#252321;border-top:1px solid rgba(255,255,255,0.12);z-index:9999;transform:none;" aria-hidden="true"></nav>
+  <nav class="bottom-nav hidden-on-scroll" style="width:100%;margin:0;height:56px;background:#24766e;border-top:1px solid rgba(255,255,255,0.18);z-index:9999;transform:none;" aria-hidden="true"></nav>
   <script>
     const bottomNav = document.querySelector('.bottom-nav');
     function updateBottomNavVisibility() {
