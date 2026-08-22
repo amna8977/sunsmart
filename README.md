@@ -1,6 +1,7 @@
 # SunSmart UV Tracker
 UV, or ultraviolet light, is a big problem during the summer. My app, the SunSmart UV Tracker, educates people about UV protection and provides skin cancer awareness and protection tips based on the information you put in the tracker. The tracker's uses vary, from a real-time UV-tracking map that provides data for specific places to a camera that analyzes your skin tone to make an accurate report of skin protection measures you should take throughout the day. Some safety measures you should use throughout the day.
--View the website here!: 
+
+- View the website here!: 
 https://amna8977.github.io/sunsmart/
 
 ## Project Contents
