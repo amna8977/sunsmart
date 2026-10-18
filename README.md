@@ -1,6 +1,6 @@
 # THIS IS SUNSMART!!
 [https://amna8977.github.io/sunsmart/
-](https://amna8977.github.io/sunsmart/)
+](https://amna8977.github.io/sunsmart/index.html)
 
 intro
 --
