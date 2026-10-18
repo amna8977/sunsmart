@@ -1,40 +1,40 @@
-# SunSmart UV Tracker
-UV, or ultraviolet light, is a big problem during the summer. My app, the SunSmart UV Tracker, educates people about UV protection and provides skin cancer awareness and protection tips based on the information you put in the tracker. The tracker's uses vary, from a real-time UV-tracking map that provides data for specific places to a camera that analyzes your skin tone to make an accurate report of skin protection measures you should take throughout the day.
+This is Sunsmart!!!
+-------
 
-- View the website here!: 
-https://amna8977.github.io/sunsmart/
+# intro
+No matter where you are or who you are, you probably have experienced a sunburn before. Sunburns are one of the many side effects of prolonged exposure to UV, or ultraviolet, radiation (or light). UV light comes from the sun, and while it helps you get vitamin D, it can sometimes be harmful. UV radiation can mutate skin cells, and these cells can build up and become skin cancer. Sunsmart aims to help people protect their skin using sunscreen, cover-ups, and other forms and techniques.
 
-## Project Contents
+# pages 
+`index.html`- this is the home page of Sunsmart
+`tracker-basic.html`- this is a basic tracker
+`tracker`- the more advanced tracker
+`map-tracker.html`- a live UV map
+`banner.html`- not part of the app, but open it for a surprise!
 
-- `SunSmartUVtracker.py` - A Python app that:
-  - accepts a city name from the user
-  - looks up matching locations via the Open-Meteo geocoding API
-  - fetches the current UV index for the selected location
-  - displays UV guidance and optional raw API output
-- `index.html` - Main SunSmart home page.
-- `tracker.html` - A more advanced UV tracker page with a camera that analyzes your skin tone to make an accurate report of skin protection measures you should take throughout the day.
-- `tracker-basic.html` - A UV tracker page with pure facts for a simpler experience.
-- `map-tracker.html` - A real-time UV-tracking map that provides data for specific places
-
-## Getting Started
-
-### Use the app
-
-- Enter a city name like `Las Vegas, NV` or `Paris, France`.
-- Select the correct location from the list of matches.
-- View the current UV index and safety guidance.
-- Optionally click `Show raw API response` to inspect the JSON data.
-
-## Some Screenshots of the App
-<img width="1872" height="995" alt="image" src="https://github.com/user-attachments/assets/226c4815-af18-498f-9542-9fad5426d3f6" />
-<img width="1321" height="972" alt="image" src="https://github.com/user-attachments/assets/3a99538f-2c69-44ab-a8cc-6fd18bec8844" />
-<img width="1856" height="979" alt="image" src="https://github.com/user-attachments/assets/1c6c240d-6dd2-4ce4-9c39-6f60df85df83" />
-<img width="1883" height="976" alt="image" src="https://github.com/user-attachments/assets/ed0e094a-5d6e-45f8-a1ad-495ab3c0b88a" />
-<img width="1915" height="886" alt="image" src="https://github.com/user-attachments/assets/ead94a68-cc95-4cc7-a2a3-1ab194f1c6d5" />
+# navigation
+## Home Page
+Welcome to the homepage of SunSmart!<brThisis is where you can get UV information and a little introductory video about UV
+## Tracker Basic  
+This is the simplest tracker in the app! <br>
+IItsuse is simple: 
+    <li>First, enter the city you wowouldike to see UV information about</li>
+    <li>S Second, if the city is wrong,  choose the correct city in the dropdown menu.</li>
+    <li>Finally, see the city's UV!! (bonus point- click check the code to see how the computer processed the data to get the UV)</li>
+## tracker
+This is the most thorough UV tracker!!
 
 
 ## Notes
 - The app uses the Open-Meteo geocoding API, forecast API, and OpenStreetMap API
+My goal is to build a website that uses an API and your location to tell you what SPF and sun protection you should use.
 
+Uses open-meteo api to findUVv:
+with the name of the city
+10 results
+lnguage
+format
+time there
+
+OpenStreetMap- image pieces downloaded to draw the map background
 .
 
