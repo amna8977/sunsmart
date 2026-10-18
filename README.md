@@ -17,6 +17,8 @@ No matter where you are or who you are, you've probably experienced a sunburn. S
 ### Home Page
 Welcome to the homepage of SunSmart!<br> 
 this is where you can get UV information, and a little introductory video about UV
+<img width="1875" height="975" alt="image" src="https://github.com/user-attachments/assets/cc5f46d0-f99b-4f8b-85a7-8224993c7e2a" />
+
 ### tracker basic
 This is the simplest tracker in the app! <br>
 It's use is simple: 
