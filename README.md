@@ -7,11 +7,11 @@ No matter where you are or who you are, you probably have experienced a sunburn 
 
 pages 
 --
-`index.html`- this is the home page of Sunsmart
-`tracker-basic.html`- this is a basic tracker
-`tracker`- the more advanced tracker
-`map-tracker.html`- a live UV map
-`banner.html`- not part of the app, but open it for a surprise!
+`index.html`- this is the home page of Sunsmart <br>
+`tracker-basic.html`- this is a basic tracker<br>
+`tracker`- the more advanced tracker<br>
+`map-tracker.html`- a live UV map<br>
+`banner.html`- not part of the app, but open it for a surprise!<br>
 
 navigation
 -
