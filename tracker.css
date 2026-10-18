@@ -113,10 +113,19 @@ button {
 .meter-labels { display: flex; justify-content: space-between; font-size: 13px; }
 .warning { display: none; border-color: #f0a000; background: #fff5df; }
 .warning h2 { color: #7a2e00; }
-.plan-output { display: none; }
+.plan-output {
+  display: none;
+  padding: 24px;
+  background: var(--surface);
+}
 .warning.active, .plan-output.active { display: block; }
 .plan-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.plan-list li { line-height: 1.4; }
+.plan-list li {
+  padding: 12px 14px;
+  border: 1px solid #d7c6a9;
+  background: #fffdf5;
+  line-height: 1.4;
+}
 .placeholder { color: #555; }
 .tone-tools { display: grid; gap: 10px; margin: 0 0 18px; }
 
