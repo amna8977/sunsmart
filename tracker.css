@@ -12,6 +12,13 @@ body {
   color: var(--ink);
   background: #bdd6dc;
 }
+body {
+  background-color: #bdd6dc;
+  background-image:
+    radial-gradient(circle at 10% 15%, #ffffffaa, transparent 35%),
+    radial-gradient(circle at 90% 75%, #ffffffaa, transparent 35%);
+  background-repeat: no-repeat;
+}
 
 main {
   max-width: 1120px;
@@ -153,11 +160,4 @@ button {
   .camera-spotlight { align-items: flex-start; flex-direction: column; }
   .camera-spotlight .camera-launch { width: 100%; }
   .site-logo { width: 78px; height: 78px; }
-}
-body {
-  background-color: #bdd6dc;
-  background-image:
-    radial-gradient(circle at 10% 15%, #ffffffaa, transparent 35%),
-    radial-gradient(circle at 90% 75%, #ffffffaa, transparent 35%);
-  background-repeat: no-repeat;
 }
