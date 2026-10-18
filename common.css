@@ -1,0 +1,61 @@
+/* Styles shared by the SunSmart pages. */
+* {
+  box-sizing: border-box;
+  font-family: "Libre Baskerville", serif;
+}
+
+button:hover {
+  background: #333;
+}
+
+.checkbox-label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.checkbox-label input {
+  width: auto;
+  margin: 0;
+}
+
+pre {
+  display: none;
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid #ddd;
+  background: var(--surface);
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  background: #fff8e7;
+}
+
+.loading-screen.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-card {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  color: var(--accent);
+  text-align: center;
+}
+
+.loading-logo {
+  width: 108px;
+  height: 108px;
+  object-fit: contain;
+}
+

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSmart Advanced UV tracker</title>
+  <link rel="icon" type="image/png" href="SUN SMART.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="tracker.css">
+  <link rel="stylesheet" href="navigation.css">
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" aria-label="Loading SunSmart" aria-live="polite">
+    <div class="loading-card">
+      <img id="loadingLogo" class="loading-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <div>Loading SunSmart</div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <a class="nav-brand" href="index.html">
+      <img id="navLogo" class="nav-logo" src="SUN SMART.png" alt="SunSmart logo">
+      <span>SunSmart</span>
+    </a>
+    <div class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-trigger" type="button" aria-expanded="false" onclick="toggleNavMenu(event)">UV tracker</button>
+        <div class="nav-menu">
+          <a href="tracker-basic.html">Basic tracker</a>
+          <a class="active" href="tracker.html">Advanced tracker</a>
+          <a href="map-tracker.html">Map tracker</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero-panel" aria-label="SunSmart UV tracker introduction">
+      <div>
+        <h1>The Advanced UV tracker</h1>
+        <p class="lead">Even more thorough skin advice!!!</p>
+      </div>
+      <img id="siteLogo" class="site-logo" src="SUN SMART.png" alt="SunSmart UV tracker logo">
+    </section>
+
+    <section class="camera-spotlight" aria-labelledby="cameraFeatureTitle">
+      <div class="feature-copy">
+        <h2 id="cameraFeatureTitle">Try the SunSmart Skin Tone Camera</h2>
+        <p>Get your skin tone with the camera, then use it for sun protection advice.</p>
+      </div>
+      <button class="camera-launch" type="button" onclick="focusCameraTools()">Try the Camera Here!!</button>
+    </section>
+
+    <div class="app-grid">
+      <section class="panel" aria-label="UV lookup and personal plan">
+        <h2>Check Your City</h2>
+        <p>Start with a your city, then add your plans to get sun safety tips.</p>
+
+        <label for="city">City</label>
+        <input id="city" type="text" placeholder="Example: Carson City, NV">
+
+        <button type="button" onclick="checkUV()">Get UV index</button>
+
+        <div id="cityPicker">
+          <label for="citySelect">Select your city:</label>
+          <select id="citySelect" onchange="fetchSelectedCityUV()"></select>
+        </div>
+
+        <h3>Personalize Your Plan</h3>
+        <label for="sensitivity">Skin sensitivity</label>
+        <select id="sensitivity" onchange="updatePlan()">
+          <option value="" selected>Choose one</option>
+          <option value="average">Average skin</option>
+          <option value="sensitive">Sensitive skin</option>
+          <option value="very-sensitive">Very fair/medical sensitivity</option>
+        </select>
+
+        <label for="skinTone">Skin color / tone</label>
+        <select id="skinTone" onchange="saveManualSkinTone()">
+          <option value="" selected>Choose one</option>
+          <option value="very-fair">Very fair</option>
+          <option value="fair">Fair</option>
+          <option value="medium">Medium</option>
+          <option value="olive">Olive</option>
+          <option value="brown">Brown</option>
+          <option value="dark">Dark</option>
+        </select>
+
+        <div id="cameraTools" class="camera-tools-inline">
+          <h4>Camera or Photo</h4>
+          <p>Optional: estimate your skin tone locally. Nothing is uploaded anywhere.</p>
+          <details class="tone-note">
+            <summary>How was the skin tone determined?</summary>
+            <p>The camera took a photo of your skin, then analyzed the pixel's colors to determine the tone.</p>
+          </details>
+          <div class="tone-tools">
+            <button class="camera-launch" type="button" onclick="openToneChooser()">Use Camera or Photo</button>
+            <button id="savedPhotoButton" type="button" onclick="useSavedSkinPhoto()" hidden>Use Your Last Saved Photo</button>
+            <p id="skinToneStatus" class="tone-note">Choose the live camera or a photo from your device to begin.</p>
+          </div>
+
+          <div id="toneChooser" class="tone-chooser">
+            <button type="button" onclick="startSkinCamera()">Use Camera</button>
+            <label class="photo-upload" for="skinImageInput">
+              Choose From Camera Roll
+              <input id="skinImageInput" type="file" accept="image/*" onchange="detectSkinToneFromFile(event)">
+            </label>
+          </div>
+
+          <div id="cameraPanel" class="camera-panel">
+            <video id="skinVideo" class="skin-video" autoplay playsinline muted></video>
+            <p class="tone-note">Point the center of the camera at your forearm or hand in natural light, then press detect.</p>
+            <div class="camera-actions">
+              <button type="button" onclick="captureSkinTone()">Detect Tone</button>
+              <button type="button" onclick="stopSkinCamera()">Cancel</button>
+            </div>
+            <canvas id="skinCanvas" class="skin-canvas" width="80" height="80"></canvas>
+          </div>
+        </div>
+
+        <label for="activity">Outdoor activity</label>
+        <select id="activity" onchange="updatePlan()">
+          <option value="" selected>Choose one</option>
+          <option value="walking">Walking or errands</option>
+          <option value="sports">Sports or exercise</option>
+          <option value="beach">Beach or pool</option>
+          <option value="school">School or camp</option>
+        </select>
+
+        <label for="timeOutside">Time outside</label>
+        <select id="timeOutside" onchange="updatePlan()">
+          <option value="" selected>Choose one</option>
+          <option value="30">Under 30 minutes</option>
+          <option value="60">About 1 hour</option>
+          <option value="120">About 2 hours</option>
+          <option value="180">3+ hours</option>
+        </select>
+
+        <div id="rawSection">
+          <label class="checkbox-label" for="showRaw">
+            <input id="showRaw" type="checkbox" onchange="toggleRawResponse()">
+            Show the Code!!!
+          </label>
+          <pre id="rawResponse"></pre>
+        </div>
+      </section>
+
+      <section class="dashboard" aria-label="UV dashboard">
+        <section id="warningPanel" class="panel warning" aria-live="polite">
+          <h2>High UV Warning</h2>
+          <p id="warningText">Extreme UV can damage skin quickly. Use stronger protection and avoid direct midday sun.</p>
+        </section>
+
+        <section id="statusCard" class="panel status-card" aria-live="polite">
+          <div>
+            <p id="locationText" class="location">No city selected yet</p>
+            <div id="uviNumber" class="uvi-number">--</div>
+            <span id="riskName" class="risk-name">Waiting</span>
+          </div>
+          <div class="risk-meter" aria-label="UV risk meter">
+            <div class="meter-track">
+              <span id="meterMarker" class="meter-marker"></span>
+            </div>
+            <div class="meter-labels">
+              <span>0</span>
+              <span>3</span>
+              <span>6</span>
+              <span>8</span>
+              <span>11+</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel guidance" aria-label="uv guidance summary">
+          <p>city local time: <time id="cityTime">--</time></p>
+          <p>recommended spf: <strong id="spfValue">enter your city</strong></p>
+          <p>reapply: <strong id="reapplyValue">enter your city</strong></p>
+          <p>best action: <strong id="actionValue">enter your city</strong></p>
+        </section>
+        <section id="planOutput" class="plan-output">
+          <h2>Your Protection Plan</h2>
+          <ul id="planList" class="plan-list"></ul>
+        </section>
+
+        <section id="emptyState" class="panel">
+          <p class="placeholder">Search for a city to unlock your UV guidance</p>
+        </section>
+      </section>
+    </div>
+  </main>
+  <script src="city-time.js"></script>
+  <script>
+    const stateNames = {
+      AK: "Alaska",
+      AZ: "Arizona",
+      AR: "Arkansas",
+      CA: "California",
+      CO: "Colorado",
+      CT: "Connecticut",
+      DE: "Delaware",
+      FL: "Florida",
+      GA: "Georgia",
+      HI: "Hawaii",
+      ID: "Idaho",
+      IL: "Illinois",
+      IN: "Indiana",
+      IA: "Iowa",
+      KS: "Kansas",
+      KY: "Kentucky",
+      LA: "Louisiana",
+      ME: "Maine",
+      MD: "Maryland",
+      MA: "Massachusetts",
+      MI: "Michigan",
+      MN: "Minnesota",
+      MS: "Mississippi",
+      MO: "Missouri",
+      MT: "Montana",
+      NE: "Nebraska",
+      NV: "Nevada",
+      NH: "New Hampshire",
+      NJ: "New Jersey",
+      NM: "New Mexico",
+      NY: "New York",
+      NC: "North Carolina",
+      ND: "North Dakota",
+      OH: "Ohio",
+      OK: "Oklahoma",
+      OR: "Oregon",
+      PA: "Pennsylvania",
+      RI: "Rhode Island",
+      SC: "South Carolina",
+      SD: "South Dakota",
+      TN: "Tennessee",
+      TX: "Texas",
+      UT: "Utah",
+      VT: "Vermont",
+      VA: "Virginia",
+      WA: "Washington",
+      WV: "West Virginia",
+      WI: "Wisconsin",
+      WY: "Wyoming"
+    };
+    const loadingScreenElement = document.getElementById("loadingScreen");
+    const skinVideoElement = document.getElementById("skinVideo");
+    const cameraPanelElement = document.getElementById("cameraPanel");
+    const toneChooserElement = document.getElementById("toneChooser");
+    const skinToneElement = document.getElementById("skinTone");
+    const citySelectElement = document.getElementById("citySelect");
+    const rawSectionElement = document.getElementById("rawSection");
+    const rawResponseElement = document.getElementById("rawResponse");
+    const showRawElement = document.getElementById("showRaw");
+    const riskNameElement = document.getElementById("riskName");
+    const planOutputElement = document.getElementById("planOutput");
+    const planListElement = document.getElementById("planList");
+    const warningPanelElement = document.getElementById("warningPanel");
+    const emptyStateElement = document.getElementById("emptyState");
+
+    let candidates = [];
+    let rawApiResponse = null;
+    let currentUV = null;
+    let currentLocation = "";
+    let skinStream = null;
+    const skinToneLabels = {
+      "very-fair": "Very fair",
+      fair: "Fair",
+      medium: "Medium",
+      olive: "Olive",
+      brown: "Brown",
+      dark: "Dark"
+    };
+
+    function hideLoadingScreen() {
+      if (!loadingScreenElement) return;
+      loadingScreenElement.classList.add("hidden");
+    }
+
+    function showLoadingScreen() {
+      if (!loadingScreenElement) return;
+      loadingScreenElement.classList.remove("hidden");
+    }
+
+    window.addEventListener("load", function() {
+      setTimeout(hideLoadingScreen, 180);
+    });
+
+
+
+    function openToneChooser() {
+      if (toneChooserElement) toneChooserElement.classList.toggle("active");
+    }
+
+    function focusCameraTools() {
+      const tools = document.getElementById("cameraTools");
+      if (toneChooserElement) toneChooserElement.classList.add("active");
+      if (tools) tools.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function saveManualSkinTone() {
+      const skinTone = skinToneElement.value;
+      if (skinTone) {
+        updateSkinToneStatus("Manual selection applied.");
+      }
+      updatePlan();
+    }
+
+    function updateSkinToneStatus(message) {
+      const status = document.getElementById("skinToneStatus");
+      if (status) status.textContent = message;
+    }
+
+    async function startSkinCamera() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        updateSkinToneStatus("Camera is not available here. Try choosing a photo from your camera roll.");
+        return;
+      }
+      try {
+        stopSkinCamera();
+        skinStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+        skinVideoElement.srcObject = skinStream;
+        cameraPanelElement.classList.add("active");
+        updateSkinToneStatus("Camera is on. Use natural light and center your forearm or hand.");
+      } catch (error) {
+        updateSkinToneStatus("Camera permission was blocked or unavailable. Try choosing a photo instead.");
+      }
+    }
+
+    async function captureSkinTone() {
+      if (!skinVideoElement || !skinVideoElement.videoWidth || !skinVideoElement.videoHeight) {
+        updateSkinToneStatus("Camera is still starting. Try again in a moment.");
+        return;
+      }
+      updateSkinToneStatus("Stabilizing camera color. Hold still for a moment...");
+      const color = await sampleStableCameraColor(skinVideoElement);
+      applyDetectedSkinTone(color, "Estimated from several camera frames.");
+      stopSkinCamera();
+    }
+
+    async function sampleStableCameraColor(skinVideoElement) {
+      const samples = [];
+      for (let i = 0; i < 10; i += 1) {
+        await wait(70);
+        samples.push(sampleImageColor(skinVideoElement, skinVideoElement.videoWidth, skinVideoElement.videoHeight));
+      }
+      samples.sort(function(a, b) { return colorBrightness(a) - colorBrightness(b); });
+      const middleSamples = samples.slice(2, 8);
+      return averageColors(middleSamples);
+    }
+
+    function wait(milliseconds) {
+      return new Promise(function(resolve) { setTimeout(resolve, milliseconds); });
+    }
+
+    function colorBrightness(color) {
+      return (color.r * 0.299) + (color.g * 0.587) + (color.b * 0.114);
+    }
+
+    function averageColors(colors) {
+      const average = { r: 0, g: 0, b: 0, skinRatio: 0, brightnessSpread: 0, texture: 0 };
+      for (const color of colors) {
+        for (const field in average) {
+          average[field] += color[field];
+        }
+      }
+      for (const field in average) {
+        average[field] /= colors.length;
+      }
+      average.r = Math.round(average.r);
+      average.g = Math.round(average.g);
+      average.b = Math.round(average.b);
+      return average;
+    }
+
+    function stopSkinCamera() {
+      if (skinStream) {
+        skinStream.getTracks().forEach(function(track) { track.stop(); });
+        skinStream = null;
+      }
+      if (skinVideoElement) skinVideoElement.srcObject = null;
+      if (cameraPanelElement) cameraPanelElement.classList.remove("active");
+    }
+
+    function detectSkinToneFromFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const image = new Image();
+      image.onload = function() {
+        const color = sampleImageColor(image, image.naturalWidth, image.naturalHeight);
+
+        applyDetectedSkinTone(color, "Estimated from your photo.");
+        URL.revokeObjectURL(image.src);
+        event.target.value = "";
+      };  
+    image.onerror = function() { updateSkinToneStatus("That image could not be read. Try another photo."); event.target.value = ""; };
+      image.src = URL.createObjectURL(file);
+    }
+
+    function sampleImageColor(source, width, height) {
+      const canvas = document.getElementById("skinCanvas");
+      const context = canvas.getContext("2d");
+      const sampleSize = 80;
+      const sourceSize = Math.max(20, Math.min(width, height) * 0.18);
+      const sourceX = (width - sourceSize) / 2;
+      const sourceY = (height - sourceSize) / 2;
+      let r = 0; let g = 0; let b = 0; let count = 0;
+      let skinPixels = 0; let brightnessTotal = 0; let brightnessSquaredTotal = 0;
+      let textureTotal = 0; let textureComparisons = 0;
+      canvas.width = sampleSize;
+      canvas.height = sampleSize;
+      context.drawImage(source, sourceX, sourceY, sourceSize, sourceSize, 0, 0, sampleSize, sampleSize);
+      const data = context.getImageData(0, 0, sampleSize, sampleSize).data;
+      for (let i = 0; i < data.length; i += 4) {
+        const pixelR = data[i];
+        const pixelG = data[i + 1];
+        const pixelB = data[i + 2];
+        const brightness = (pixelR * 0.299) + (pixelG * 0.587) + (pixelB * 0.114);
+        r += pixelR; g += pixelG; b += pixelB; count += 1;
+        brightnessTotal += brightness;
+        brightnessSquaredTotal += brightness * brightness;
+        if (isSkinPixel(pixelR, pixelG, pixelB)) skinPixels += 1;
+
+        if ((i / 4) % sampleSize !== 0) {
+          const previousBrightness = (data[i - 4] * 0.299) + (data[i - 3] * 0.587) + (data[i - 2] * 0.114);
+          textureTotal += Math.abs(brightness - previousBrightness);
+          textureComparisons += 1;
+        }
+      }
+      const averageBrightness = brightnessTotal / count;
+      const brightnessVariance = Math.max(0, (brightnessSquaredTotal / count) - (averageBrightness * averageBrightness));
+      return {
+        r: Math.round(r / count),
+        g: Math.round(g / count),
+        b: Math.round(b / count),
+        skinRatio: skinPixels / count,
+        brightnessSpread: Math.sqrt(brightnessVariance),
+        texture: textureTotal / Math.max(1, textureComparisons)
+      };
+    }
+
+    function isSkinPixel(r, g, b) {
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const cb = 128 - (0.169 * r) - (0.331 * g) + (0.5 * b);
+      const cr = 128 + (0.5 * r) - (0.419 * g) - (0.081 * b);
+      const rgbShape = r > 35 && g > 25 && b > 18 && (max - min) > 10 && r >= g - 18 && r > b - 5;
+      const skinChrominance = cb >= 75 && cb <= 137 && cr >= 128 && cr <= 180;
+      return rgbShape && skinChrominance;
+    }
+
+    function applyDetectedSkinTone(color, detailMessage) {
+      if (!isLikelySkinSample(color)) { updateSkinToneStatus("No clear skin sample was detected. Use a close-up of a bare forearm or hand in even natural light, avoid faces, pets, clothing, shadows, and patterned backgrounds."); return; }
+      const tone = classifySkinTone(color.r, color.g, color.b);
+      skinToneElement.value = tone;
+      updateSkinToneStatus("Estimated " + skinToneLabels[tone] + " skin tone. " + detailMessage + " Lighting can affect results.");
+      if (toneChooserElement) toneChooserElement.classList.remove("active"); updatePlan();
+    }
+
+    function isLikelySkinSample(sample) {
+      const r = sample.r; const g = sample.g; const b = sample.b;
+      const max = Math.max(r, g, b); const min = Math.min(r, g, b);
+      const brightness = (r * 0.299) + (g * 0.587) + (b * 0.114);
+      const saturationRange = max - min;
+      const warmEnough = r >= b - 12 && r >= g - 35;
+      const notTooGray = saturationRange > 12;
+      const notTooBrightOrDark = brightness > 45 && brightness < 245;
+      const channelBalance = g > 35 && r > 45 && b > 25;
+      const notStrongGreenBlue = g < r + 70 && b < r + 55;
+      const mostlySkinPixels = sample.skinRatio >= 0.62;
+      const evenlyLit = sample.brightnessSpread <= 42;
+      const notHighlyTextured = sample.texture <= 20;
+      return warmEnough && notTooGray && notTooBrightOrDark && channelBalance &&
+        notStrongGreenBlue && mostlySkinPixels && evenlyLit && notHighlyTextured;
+    }
+
+    function classifySkinTone(r, g, b) {
+      const brightness = (r * 0.299) + (g * 0.587) + (b * 0.114);
+      const warmth = r - b;
+      if (brightness > 210) return "very-fair";
+      if (brightness > 178) return "fair";
+      if (brightness > 145) return warmth > 28 ? "olive" : "medium";
+      if (brightness > 95) return "brown";
+      return "dark";
+    }
+
+    async function checkUV() {
+      setCityTimeZone(null);
+      const cityInput = document.getElementById("city");
+      const cityPicker = document.getElementById("cityPicker");
+      const city = cityInput.value.trim();
+      const locationQuery = parseLocationQuery(city);
+      if (city === "") {
+        showStatusMessage("Please enter a city.");
+        return;
+      }
+        cityPicker.style.display = "none";
+      rawSectionElement.style.display = "none";
+      rawResponseElement.style.display = "none";
+    
+      showRawElement.checked = false;
+      rawApiResponse = null;
+      currentUV = null;
+      showLoadingScreen();
+      showStatusMessage("Looking up your city...");
+      try {
+        const searchUrl = "https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(locationQuery.city) + "&count=10&language=en&format=json";
+        const searchResponse = await fetch(searchUrl);
+        const searchData = await searchResponse.json();
+        const matchingCandidates = filterCandidates(searchData.results || [], locationQuery);
+        if (matchingCandidates.length === 0) { showStatusMessage("No results found. Try a more specific query like Carson City, NV."); hideLoadingScreen(); return; }
+        candidates = prioritizeCandidates(matchingCandidates, locationQuery);
+        buildCitySelect();
+        cityPicker.style.display = "block";
+        await fetchSelectedCityUV();
+      } catch (error) { showStatusMessage("No results found. Check your connection or try a more specific city."); hideLoadingScreen(); }
+    }
+
+    function parseLocationQuery(query) {
+      const parts = query.split(",").map(function(part) { return part.trim(); }).filter(Boolean);
+      const city = parts[0] || query;
+      const region = parts.length > 1 ? parts[1] : "";
+      const regionUpper = region.toUpperCase();
+      return { city: city, region: region, stateName: stateNames[regionUpper] || region };
+    }
+
+    function prioritizeCandidates(results, locationQuery) {
+      if (!locationQuery.region) return results;
+      return results.slice().sort(function(a, b) { return candidateScore(b, locationQuery) - candidateScore(a, locationQuery); });
+    }
+
+    function filterCandidates(results, locationQuery) {
+      const city = normalizeLocationName(locationQuery.city);
+      const region = normalizeLocationName(locationQuery.region);
+      const state = normalizeLocationName(locationQuery.stateName);
+      const matches = [];
+      for (const candidate of results) {
+        const name = normalizeLocationName(candidate.name || "");
+        const candidateState = normalizeLocationName(candidate.admin1 || "");
+        if (name === city && (!region || candidateState === region || candidateState === state)) {
+          matches.push(candidate);
+        }
+      }
+      return matches;
+    }
+
+    function candidateScore(candidate, locationQuery) {
+      const admin = (candidate.admin1 || "").toLowerCase();
+      const country = (candidate.country_code || candidate.country || "").toLowerCase();
+      const wantedRegion = locationQuery.region.toLowerCase();
+      const wantedState = locationQuery.stateName.toLowerCase();
+      let score = 0;
+      if (admin === wantedState || admin === wantedRegion) score += 20;
+      else if (admin.includes(wantedState) || admin.includes(wantedRegion)) score += 10;
+      if (country === "us" || country === "united states") score += 2;
+      return score;
+    }
+
+    function normalizeLocationName(value) {
+      const lowercase = String(value).trim().toLowerCase();
+      const lettersAndNumbers = lowercase.replace(/[^a-z0-9 ]/g, "");
+      return lettersAndNumbers.replace(/\s+/g, " ");
+    }
+
+    function buildCitySelect() {
+      citySelectElement.innerHTML = "";
+      for (let index = 0; index < candidates.length; index++) {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = cityLabel(candidates[index]);
+        citySelectElement.appendChild(option);
+      }
+    }
+
+    async function fetchSelectedCityUV() {
+      const choice = candidates[Number(citySelectElement.value)];
+      if (!choice) {
+        hideLoadingScreen();
+        return;
+      }
+      setCityTimeZone(choice.timezone);
+      const label = cityLabel(choice);
+      const lat = Number(choice.latitude);
+      const lon = Number(choice.longitude);
+      showRawElement.checked = false;
+      rawResponseElement.style.display = "none";
+      showStatusMessage("Fetching current UV index for " + label + "...");
+      try {
+        const uvUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=uv_index";
+        const uvResponse = await fetch(uvUrl);
+        const uvData = await uvResponse.json();
+        rawApiResponse = uvData;
+        rawSectionElement.style.display = "block";
+        const uvi = uvData.current && uvData.current.uv_index;
+        if (uvi === undefined || uvi === null) { showStatusMessage("UV index not found in response."); hideLoadingScreen(); return; }
+        currentUV = Number(uvi);
+        currentLocation = label;
+        updateDashboard();
+        hideLoadingScreen();
+      } catch (error) { showStatusMessage("UV index not found in response."); hideLoadingScreen(); }
+    }
+
+    function cityLabel(candidate) {
+      let label = candidate.name || "";
+      const regions = [];
+      if (candidate.admin1) regions.push(candidate.admin1);
+      if (candidate.country) regions.push(candidate.country);
+      if (regions.length) label += ", " + regions.join(", ");
+      return label;
+    }
+
+    function updateDashboard() {
+      const risk = getRiskLevel(currentUV);
+      const guidance = getGuidance(currentUV);
+      const statusCard = document.getElementById("statusCard");
+      const marker = document.getElementById("meterMarker");
+      const warningText = document.getElementById("warningText");
+      statusCard.className = "panel status-card " + risk.className;
+      document.getElementById("locationText").textContent = currentLocation;
+      document.getElementById("uviNumber").textContent = currentUV.toFixed(1);
+      riskNameElement.textContent = risk.name;
+      riskNameElement.style.background = risk.color;
+      marker.style.left = Math.min(currentUV, 11) / 11 * 100 + "%";
+      document.getElementById("spfValue").textContent = guidance.spf;
+      document.getElementById("reapplyValue").textContent = guidance.reapply;
+      document.getElementById("actionValue").textContent = guidance.action;
+      warningPanelElement.classList.toggle("active", currentUV >= 8);
+      warningText.textContent = currentUV >= 11 ? "Extreme UV today. Skin can burn quickly, so avoid direct midday sun, use SPF 50+, and cover exposed skin." : "Very high UV today. Use SPF 50, reapply often, wear sunglasses, and find shade whenever possible.";
+      emptyStateElement.style.display = "none";
+      updatePlan();
+    }
+
+    function updatePlan() {
+      if (currentUV === null) { planOutputElement.classList.remove("active"); return; }
+      const sensitivityChoice = document.getElementById("sensitivity").value;
+      const skinToneChoice = skinToneElement.value;
+      const activityChoice = document.getElementById("activity").value;
+      const timeOutsideValue = document.getElementById("timeOutside").value;
+      const sensitivity = sensitivityChoice || "average";
+      const skinTone = skinToneChoice || "medium";
+      const activity = activityChoice || "walking";
+      const guidance = getGuidance(currentUV);
+      const plan = [];
+      let spf = guidance.spf;
+      let reapply = guidance.reapply;
+      const timeOutside = Number(timeOutsideValue || 60);
+      if (sensitivity === "sensitive" && currentUV >= 3) spf = "SPF 50";
+      if (sensitivity === "very-sensitive" && currentUV >= 3) spf = "SPF 50+";
+      if ((skinTone === "very-fair" || skinTone === "fair") && currentUV >= 3) spf = "SPF 50";
+      if (skinTone === "very-fair" && currentUV >= 6) spf = "SPF 50+";
+      if (activity === "beach" || activity === "sports") reapply = currentUV >= 6 ? "Every 60 to 80 minutes" : "Every 90 minutes";
+      plan.push("Use " + spf + " before going outside.");
+      plan.push("Reapply sunscreen " + reapply.toLowerCase() + ".");
+      if (!sensitivityChoice || !skinToneChoice || !activityChoice || !timeOutsideValue) plan.push("Blank choices were estimated with average skin, medium skin tone, walking or errands, and about 1 hour outside.");
+      if (skinTone === "very-fair" || skinTone === "fair") plan.push("Because your skin tone can burn faster, add a hat and shade breaks even for shorter trips.");
+      else if (skinTone === "brown" || skinTone === "dark") plan.push("Better safe than sorry! UV can still damage skin of all tones, so use sunscreen and shade when possible.");
+      if (currentUV >= 6 || timeOutside >= 120) plan.push("Bring a hat, sunglasses, and a light cover-up.");
+      if (currentUV >= 8) plan.push("Avoid direct sun from late morning through mid-afternoon.");
+      else if (currentUV >= 3) plan.push("Look for shade during the brightest part of the day.");
+      else plan.push("UV is lower, but protection still helps if you burn easily.");
+      if (activity === "beach") plan.push("Use water-resistant sunscreen and reapply after swimming or sweating.");
+      else if (activity === "sports") plan.push("Pack extra sunscreen because sweat can reduce protection.");
+      else if (activity === "school") plan.push("Keep sunscreen in your bag and choose shaded areas during breaks.");
+      if (timeOutside >= 180) plan.push("Plan a shade break every hour.");
+      planListElement.innerHTML = "";
+      for (const recommendation of plan) {
+        const listItem = document.createElement("li");
+          listItem.textContent = recommendation;
+        planListElement.appendChild(listItem);
+      }      
+      planOutputElement.classList.add("active");
+    }
+
+    function showStatusMessage(message) {
+      document.getElementById("locationText").textContent = message;
+      document.getElementById("uviNumber").textContent = "--";
+      riskNameElement.textContent = "Waiting";
+      riskNameElement.style.background = "#111";
+      document.getElementById("meterMarker").style.left = "0%";
+      document.getElementById("spfValue").textContent = "Enter your city";
+      document.getElementById("reapplyValue").textContent = "Enter your city";
+      document.getElementById("actionValue").textContent = "Enter your city";
+      warningPanelElement.classList.remove("active");
+      planOutputElement.classList.remove("active");
+      emptyStateElement.style.display = "block";
+    }
+
+    function getRiskLevel(uvi) {
+      if (uvi <= 2) return { name: "Low", className: "low", color: "#2f8f46" };
+      if (uvi <= 5) return { name: "Moderate", className: "moderate", color: "#e0a800" };
+      if (uvi <= 7) return { name: "High", className: "high", color: "#e86f1a" };
+      if (uvi <= 10) return { name: "Very high", className: "very-high", color: "#d92323" };
+      return { name: "Extreme", className: "extreme", color: "#7b2cbf" };
+    }
+
+    function getGuidance(uvi) {
+      if (uvi <= 2) return { spf: "SPF 15+", reapply: "Every 2 hours", action: "Enjoy, but protect sensitive skin if needed." };
+      if (uvi <= 5) return { spf: "SPF 30", reapply: "Every 2 hours", action: "Use shade at midday!" };
+      if (uvi <= 7) return { spf: "SPF 50", reapply: "Every 90 minutes", action: "Cover up and seek shade!" };
+      if (uvi <= 10) return { spf: "SPF 50", reapply: "Every 60 to 80 minutes", action: "Avoid direct midday sun!" };
+      return { spf: "SPF 50+", reapply: "Every 60 minutes", action: "Stay shaded when possible." };
+    }
+
+    function toggleRawResponse() {
+      rawResponseElement.style.display = showRawElement.checked ? "block" : "none";
+      rawResponseElement.textContent = showRawElement.checked && rawApiResponse ? JSON.stringify(rawApiResponse, null, 2) : "";
+    }
+  </script>
+
+  <script src="navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAC submission Docs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="banner.css">
+</head>
+<body>
+    <div
+      id="loadingScreen"
+      class="loading-screen"
+      aria-label="Loading SunSmart"
+      aria-live="polite"
+    >
+      <div class="loading-card">
+        <img id="loadingLogo" class="loading-logo" src="SUN SMART.png" alt="SunSmart logo">
+        <div>Loading SunSmart</div>
+      </div>
+    </div>
+
+    <main class="page-content">
+      <h1>Congressional App Challenge form submission answers</h1>
+
+      <section class="submission-question">
+        <h2>Please briefly describe what your app does? *</h2>
+        <p>My app, The Sunsmart UV tracker, educates people about UV protection and provides skin cancer awareness and protection tips based on the information you put in the tracker.</p>
+      </section>
+
+      <section class="submission-question">
+        <h2>What inspired you to create this app? *</h2>
+        <p>When I was at the NBA health fair for my nonprofit Cansersense, there was a stand in which dermatologists gave screenings for skin cancer. Talking to these dermatologists, I realised that skin cancer is a huge problem in the United States, and out here in Nevada, we get some of the highest UV levels in the country! When I came home later that day, I got an idea to take the organization I founded a step further, creating an app that could inform anyone, anywhere of how the object that lights their world could also be dangerous to us. The app I was building would be a tracker of sorts, one that could be accessible anywhere, through any device, customizable with the information the user gave it.</p>
+      </section>
+
+      <section class="submission-question">
+        <h2>What technical difficulties did you face programming your app? *</h2>
+        <p>Overall, I feel main hardships was in getting the front-end (graphic design) layout to feel neat and polished, rather than in complex backend code that let me have the customized results for each input you put in the app. One problem in particular was trying to make a loading screen when opening the app (you can see it for yourself then you try the website out!). In the beginning, I had to learn to figure out how to communicate with computer itself to tell my code when to show the loading screen. It took so much effort to do this, but in the end, it looks cute and might be one of the little features I am most proud of!</p>
+      </section>
+
+      <section class="submission-question">
+        <h2>If you used AI, tell us how you used it and what your team contributed directly. Please list the AI tools you used and briefly explain how they helped. Then describe what your team designed, coded, changed, tested, or finalized yourselves.</h2>
+        <p>When I was creating this app, there was some aspects to the CSS, the stylesheet of the HTML page, that were complicated and beyond my knowledge of coding. I used AI to help me style some of the pages to give them a neat, clean look.</p>
+      </section>
+
+      <section class="submission-question">
+        <h2>What improvements would you make if you were to create a 2.0 version of your app? *</h2>
+        <p>If I were to make a 2.0 version of my app, I would add features like a map that told you exactly the UV levels around you. I would also make a more simplified section so that younger audiences could better understand how to protect themselves from the UV light.</p>
+      </section>
+
+      <section class="submission-question">
+        <h2>What did you learn or take away from participating in the Congressional App Challenge? *</h2>
+        <p>Throughout my journey of creating this app, I learned so many useful skills. Reflecting on my experience of creating this app, I realize the best part of creating this app wasn't the making of the app, but the thought of one less death to skin cancer that I might have prevented because someone used my app.</p>
+      </section>
+    </main>
+
+    <script>
+
+      window.addEventListener("load", function () {
+        const loadingScreen = document.getElementById("loadingScreen");
+
+        if (!loadingScreen) {
+          return;
+        }
+
+        setTimeout(function () {
+          loadingScreen.classList.add("hidden");
+        }, 180);
+      });
+    </script>
+</body>
+</html>

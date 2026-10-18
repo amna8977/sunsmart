@@ -1,0 +1,32 @@
+:root {
+      --ink: #25313c;
+      --surface: #fff8e7;
+      --accent: #ef7047;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background-color: #bdd6dc;
+    }
+
+    .page-content {
+      padding: 8px;
+    }
+
+    .submission-question {
+      margin-block: 2rem;
+    }
+
+    .submission-question h2 {
+      font-size: 1.125rem;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+    }
