@@ -1,5 +1,5 @@
-https://amna8977.github.io/sunsmart/
-
+[https://amna8977.github.io/sunsmart/
+](https://amna8977.github.io/sunsmart/index.html)
 # intro
 No matter where you are or who you are, you proboable have experienved a sunburn before. Sunburns are one of the may side affects of prolounged exposure to UV, or ultraviolet, radiation (or light). UV light comes from the sun, and while it is benefitial to help gain vitamin D, it can sometimes be harmful. Sometimes, UV radiation can mutate skin cells, and then these skin cells can build up and become can become skin cancer. Sunsmart aims to help people to protect their skin by using sunscreen, cover-ups, and others forms and techniques.
 
