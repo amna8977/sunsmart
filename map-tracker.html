@@ -403,7 +403,7 @@
     }).setView([39.8283, -98.5795], 5);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      noWrap: true,
+      noWrap: false,
       minZoom: 2,
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -494,7 +494,7 @@
     refreshButton.addEventListener("click", updateFromCenter);
 
     window.addEventListener("load", function() {
-      setTimeout(hideLoadingScreen, 180);
+      setTimeout(hideLoadingScreen, 1000);
       setTimeout(function() {
         map.invalidateSize();
         updateFromCenter();
